@@ -1,0 +1,14 @@
+# ninja log v5
+4	76	1694196044088241600	/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.vert.spv	a4e390c73c287742
+76	640	1694196044632243600	CMakeFiles/VulkanTest.dir/lve_pipeline.cpp.o	2405496f8bbb8263
+76	622	1694196044612243600	CMakeFiles/VulkanTest.dir/main.cpp.o	df13ad407ab66725
+4	69	1694196044088241600	/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.frag.spv	108bb330dc9b7947
+76	779	1694196044756244100	CMakeFiles/VulkanTest.dir/first_app.cpp.o	f7e9c98e0fb1dcef
+13	415	1694197185200939700	CMakeFiles/VulkanTest.dir/lve_model.cpp.o	c642d2973ca7f8a2
+3	356	1694197312832815200	build.ninja	560ac3a2d5263a13
+76	815	1694196044768244100	CMakeFiles/VulkanTest.dir/lve_device.cpp.o	1e768bc1fefcead0
+76	284	1694196044288242400	CMakeFiles/VulkanTest.dir/lve_window.cpp.o	3b23db66b183df82
+419	634	1694197185444939500	VulkanTest	eb30eb9391b46c21
+1	25	0	clean	62ee200b5ed9961c
+6	579	1694197127220990700	CMakeFiles/VulkanTest.dir/lve_swap_chain.cpp.o	16f5e29c1dd6496d
+17	238	1694197315920812000	VulkanTest	937f2218886a3f50
