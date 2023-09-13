@@ -10,9 +10,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <array>
-
-namespace lve {
-
+namespace lve
+{
     struct SimplePushConstantData {
         glm::vec2 offset;
         alignas(16) glm::vec3 color;
@@ -23,7 +22,9 @@ namespace lve {
     // Each new value must end or begin on a 4 byte boundary.
     uint32_t pushConstantDataSize = sizeof(SimplePushConstantData); //16 + 12;
 
-    FirstApp::FirstApp() {
+}
+
+    lve::FirstApp::FirstApp() {
         loadModels();
         createPipelineLayout();
         recreateSwapChain();
@@ -31,11 +32,11 @@ namespace lve {
         createCommandBuffers();
     }
 
-    FirstApp::~FirstApp() {
+    lve::FirstApp::~FirstApp() {
         vkDestroyPipelineLayout(lveDevice.device(), pipelineLayout, nullptr);
     }
 
-    void FirstApp::run() {
+    void lve::FirstApp::run() {
         while (!lveWindow.shouldClose()) {
             glfwPollEvents();
             drawFrame();
@@ -44,17 +45,20 @@ namespace lve {
         vkDeviceWaitIdle(lveDevice.device());
     }
 
-    void FirstApp::loadModels() {
+    void lve::FirstApp::loadModels() {
         std::vector<LveModel::Vertex> vertices{
-                {{0.0f, -0.5f},{1.0f, 0.0f, 0.0f}},
-                {{0.5f, 0.5f},{0.0f, 1.0f, 0.0f}},
-                {{-0.5f, 0.5f},{0.0f, 0.0f, 1.0f}}
+                {{-0.5f, -0.5f},{1.0f, 0.0f, 0.0f}},
+                {{0.5f, 0.5f},{1.0f, 0.0f, 0.0f}},
+                {{-0.5f, 0.5f},{1.0f, 0.0f, 1.0f}},
+            {{-0.5f,-0.5f}, {0.0f, 0.0f, 1.0f}},
+            {{0.5f,-0.5f}, {0.0f, 0.0f, 1.0f}},
+            {{-0.5f,0.5f}, {0.0f, 0.0f, 1.0f}}
         };
 
         lveModel = std::make_unique<LveModel>(lveDevice, vertices);
     }
 
-    void FirstApp::createPipelineLayout() {
+    void lve::FirstApp::createPipelineLayout() {
         VkPushConstantRange pushConstantRange{};
         pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
         pushConstantRange.offset = 0;
@@ -73,7 +77,7 @@ namespace lve {
         }
     }
 
-    void FirstApp::createPipeline() {
+    void lve::FirstApp::createPipeline() {
         assert (lveSwapChain != nullptr && "Cannot create pipeline before swap chain");
         assert (pipelineLayout != nullptr && "Cannot create pipeline before pipeline layout");
 
@@ -84,13 +88,13 @@ namespace lve {
         pipelineConfig.pipelineLayout = pipelineLayout;
         lvePipeline = std::make_unique<LvePipeline>(
                 lveDevice,
-                "../shaders/simple_shader.vert.spv",
-                "../shaders/simple_shader.frag.spv",
+                "./shaders/simple_shader.vert.spv",
+                "./shaders/simple_shader.frag.spv",
                 pipelineConfig
         );
     }
 
-    void FirstApp::recreateSwapChain() {
+    void lve::FirstApp::recreateSwapChain() {
         auto extent = lveWindow.getExtent();
         while (extent.width == 0 || extent.height == 0) {
             extent = lveWindow.getExtent();
@@ -118,7 +122,7 @@ namespace lve {
         createPipeline();
     }
 
-    void FirstApp::createCommandBuffers() {
+    void lve::FirstApp::createCommandBuffers() {
 
         commandBuffers.resize(lveSwapChain->imageCount());
 
@@ -135,7 +139,7 @@ namespace lve {
 
     }
 
-    void FirstApp::freeCommandBuffers() {
+    void lve::FirstApp::freeCommandBuffers() {
         vkFreeCommandBuffers(
                 lveDevice.device(),
                 lveDevice.getCommandPool(),
@@ -145,7 +149,7 @@ namespace lve {
         commandBuffers.clear();
     }
 
-    void FirstApp::recordCommandBuffer(int imageIndex) {
+    void lve::FirstApp::recordCommandBuffer(int imageIndex) {
         static int frame = 0;
         frame = (frame + 1) % 1000;
 
@@ -210,7 +214,7 @@ namespace lve {
         }
     }
 
-    void FirstApp::drawFrame() {
+    void lve::FirstApp::drawFrame() {
         uint32_t imageIndex;
         auto result = lveSwapChain->acquireNextImage(&imageIndex);
 
@@ -234,5 +238,4 @@ namespace lve {
         }
     }
 
-}
 
