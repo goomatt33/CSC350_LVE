@@ -29,6 +29,18 @@ namespace lve {
 
         void run();
 
+        //Sprite Stuff
+        struct square
+        {
+            LveModel::Vertex TopLeft;
+            LveModel::Vertex TopRight;
+            LveModel::Vertex BottomLeft;
+            LveModel::Vertex BottomRight;
+        };
+
+        square MakeSquare(float topLeftX, float topLeftY, float size, float r, float g, float b);
+        square MakeSquare(float topLeftX, float topLeftY, float size, int palletColor);
+
     private:
         void loadModels();
         void createPipelineLayout();
@@ -39,6 +51,9 @@ namespace lve {
         void recreateSwapChain();
         void recordCommandBuffer(int imageIndex);
 
+        void loadFromFile(std::string file);
+
+
         LveWindow lveWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
         LveDevice lveDevice{lveWindow};
         std::unique_ptr<LveSwapChain> lveSwapChain;
@@ -46,6 +61,12 @@ namespace lve {
         VkPipelineLayout pipelineLayout;
         std::vector<VkCommandBuffer> commandBuffers;
         std::unique_ptr<LveModel> lveModel;
+
+        //Sprite Stuff
+        std::vector<glm::vec3> pallet;
+
+        std::vector<std::vector<int>> colorArray;
+
     };
 }
 

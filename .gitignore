@@ -3,6 +3,13 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+#VisualStudio2022 porject files
+VulkanTest/*.vcxproj
+VulkanTest/*.filters
+
+#CMake files
+VulkanTest/CMakeList.txt
+
 # User-specific files
 *.rsuser
 *.suo
