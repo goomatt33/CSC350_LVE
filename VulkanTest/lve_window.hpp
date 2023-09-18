@@ -2,8 +2,7 @@
 // Created by cdgira on 6/30/2023.
 //
 
-#ifndef VULKANTEST_LVE_WINDOW_HPP
-#define VULKANTEST_LVE_WINDOW_HPP
+#pragma once
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 #include <string>
@@ -38,5 +37,3 @@ namespace lve {
         GLFWwindow* window;
     };
 }
-
-#endif //VULKANTEST_LVE_WINDOW_HPP

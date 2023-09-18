@@ -1,10 +1,7 @@
 //
 // Created by cdgira on 7/10/2023.
 //
-
-#ifndef VULKANTEST_LVE_MODEL_HPP
-#define VULKANTEST_LVE_MODEL_HPP
-
+#pragma once
 #include "lve_device.hpp"
 
 #define GLM_FORCE_RADIANS
@@ -41,4 +38,3 @@ namespace lve {
     };
 }
 
-#endif //VULKANTEST_LVE_MODEL_HPP
