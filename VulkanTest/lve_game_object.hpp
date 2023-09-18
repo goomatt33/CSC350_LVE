@@ -2,8 +2,12 @@
 // Created by cdgira on 7/13/2023.
 //
 
+<<<<<<< HEAD
 #ifndef VULKANTEST_LVE_GAME_OBJECT_HPP
 #define VULKANTEST_LVE_GAME_OBJECT_HPP
+=======
+#pragma once
+>>>>>>> 3abbcba (Updated for V16)
 
 #include "lve_model.hpp"
 #include <memory>
@@ -45,12 +49,18 @@ namespace lve {
         glm::vec3 color{};
         Transform2dComponent transform2d{};
 
+<<<<<<< HEAD
         bool shrink = true;
 
+=======
+>>>>>>> 3abbcba (Updated for V16)
     private:
         LveGameObject(id_t id) : id(id) {}
         id_t id;
     };
 }
 
+<<<<<<< HEAD
 #endif //VULKANTEST_LVE_GAME_OBJECT_HPP
+=======
+>>>>>>> 3abbcba (Updated for V16)

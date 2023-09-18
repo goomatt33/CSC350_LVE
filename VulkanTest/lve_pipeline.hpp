@@ -2,8 +2,7 @@
 // Created by cdgira on 7/6/2023.
 //
 
-#ifndef VULKANTEST_LVE_PIPELINE_HPP
-#define VULKANTEST_LVE_PIPELINE_HPP
+#pragma once
 
 #include "lve_device.hpp"
 
@@ -53,5 +52,3 @@ namespace lve {
 
 }
 
-
-#endif //VULKANTEST_LVE_PIPELINE_HPP

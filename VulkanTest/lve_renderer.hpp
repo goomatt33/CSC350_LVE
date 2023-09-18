@@ -2,8 +2,12 @@
 // Created by cdgira on 7/17/2023.
 //
 
+<<<<<<< HEAD
 #ifndef VULKANTEST_LVE_RENDERER_HPP
 #define VULKANTEST_LVE_RENDERER_HPP
+=======
+#pragma once
+>>>>>>> 3abbcba (Updated for V16)
 
 #include "lve_device.hpp"
 #include "lve_swap_chain.hpp"
@@ -57,5 +61,8 @@ namespace lve {
         bool isFrameStarted{false};
     };
 }
+<<<<<<< HEAD
 
 #endif //VULKANTEST_LVE_RENDERER_HPP
+=======
+>>>>>>> 3abbcba (Updated for V16)
