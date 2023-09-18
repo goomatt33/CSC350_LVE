@@ -24,10 +24,12 @@ namespace lve {
             return rotationMat*scaleMat;
         };
     };
+
     class LveGameObject {
     public:
         using id_t = unsigned int;
 
+        // Use this type of contructor for connection class in server project
         static LveGameObject createGameObject() {
             static id_t currentId = 0;
             return LveGameObject{currentId++};
