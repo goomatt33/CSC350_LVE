@@ -49,7 +49,7 @@ foreach(source IN LISTS SHADERS)
 endforeach()
 
 add_custom_target(shaders ALL DEPENDS ${SPV_SHADERS})
-set(MY_SHADERS ${SPV_SHADERS})
+set(MY_SHADERS ${SPV_SHADERS} lve_game_object.hpp simple_render_system.cpp simple_render_system.cpp)
 
 ### END SHADER COMPILATION
 file(GLOB CPP_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)

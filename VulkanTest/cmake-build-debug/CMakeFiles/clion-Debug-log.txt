@@ -2,3 +2,4 @@
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug
+CMake File API: /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug: /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug/.cmake/api/v1/reply (Is a directory)

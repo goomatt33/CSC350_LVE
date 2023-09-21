@@ -83,6 +83,13 @@ build CMakeFiles/VulkanTest.dir/lve_pipeline.cpp.o: CXX_COMPILER__VulkanTest_Deb
   OBJECT_DIR = CMakeFiles/VulkanTest.dir
   OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
 
+build CMakeFiles/VulkanTest.dir/lve_renderer.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lve_renderer.cpp || cmake_object_order_depends_target_VulkanTest
+  DEP_FILE = CMakeFiles/VulkanTest.dir/lve_renderer.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -isystem /usr/lib
+  OBJECT_DIR = CMakeFiles/VulkanTest.dir
+  OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
+
 build CMakeFiles/VulkanTest.dir/lve_swap_chain.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lve_swap_chain.cpp || cmake_object_order_depends_target_VulkanTest
   DEP_FILE = CMakeFiles/VulkanTest.dir/lve_swap_chain.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
@@ -104,6 +111,13 @@ build CMakeFiles/VulkanTest.dir/main.cpp.o: CXX_COMPILER__VulkanTest_Debug /home
   OBJECT_DIR = CMakeFiles/VulkanTest.dir
   OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
 
+build CMakeFiles/VulkanTest.dir/simple_render_system.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/simple_render_system.cpp || cmake_object_order_depends_target_VulkanTest
+  DEP_FILE = CMakeFiles/VulkanTest.dir/simple_render_system.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -isystem /usr/lib
+  OBJECT_DIR = CMakeFiles/VulkanTest.dir
+  OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target VulkanTest
@@ -112,7 +126,7 @@ build CMakeFiles/VulkanTest.dir/main.cpp.o: CXX_COMPILER__VulkanTest_Debug /home
 #############################################
 # Link the executable VulkanTest
 
-build VulkanTest: CXX_EXECUTABLE_LINKER__VulkanTest_Debug CMakeFiles/VulkanTest.dir/first_app.cpp.o CMakeFiles/VulkanTest.dir/lve_device.cpp.o CMakeFiles/VulkanTest.dir/lve_model.cpp.o CMakeFiles/VulkanTest.dir/lve_pipeline.cpp.o CMakeFiles/VulkanTest.dir/lve_swap_chain.cpp.o CMakeFiles/VulkanTest.dir/lve_window.cpp.o CMakeFiles/VulkanTest.dir/main.cpp.o | /usr/lib/x86_64-linux-gnu/libvulkan.so
+build VulkanTest: CXX_EXECUTABLE_LINKER__VulkanTest_Debug CMakeFiles/VulkanTest.dir/first_app.cpp.o CMakeFiles/VulkanTest.dir/lve_device.cpp.o CMakeFiles/VulkanTest.dir/lve_model.cpp.o CMakeFiles/VulkanTest.dir/lve_pipeline.cpp.o CMakeFiles/VulkanTest.dir/lve_renderer.cpp.o CMakeFiles/VulkanTest.dir/lve_swap_chain.cpp.o CMakeFiles/VulkanTest.dir/lve_window.cpp.o CMakeFiles/VulkanTest.dir/main.cpp.o CMakeFiles/VulkanTest.dir/simple_render_system.cpp.o | /usr/lib/x86_64-linux-gnu/libvulkan.so
   FLAGS = -g
   LINK_LIBRARIES = /usr/lib/x86_64-linux-gnu/libvulkan.so  -lglfw
   OBJECT_DIR = CMakeFiles/VulkanTest.dir
