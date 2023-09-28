@@ -2,7 +2,8 @@
 // Created by cdgira on 6/30/2023.
 //
 
-#pragma once
+#ifndef VULKANTEST_FIRST_APP_HPP
+#define VULKANTEST_FIRST_APP_HPP
 
 #include "lve_window.hpp"
 #include "lve_game_object.hpp"
@@ -28,13 +29,56 @@ namespace lve {
 
         void run();
 
+        struct Cube
+        {
+            LveModel::Vertex BackTopLeft;
+            LveModel::Vertex BackTopRight;
+            LveModel::Vertex BackBottomLeft;
+            LveModel::Vertex BackBottomRight;
+            
+            LveModel::Vertex FrontTopLeft;
+            LveModel::Vertex FrontTopRight;
+            LveModel::Vertex FrontBottomLeft;
+            LveModel::Vertex FrontBottomRight;
+
+            glm::vec3 color;
+        };
+
+        Cube MakeCube(float topFLX, float topFLY, float topFLZ, float size, int palletColor);
+
+        void MakeModel(LveDevice& device, glm::vec3 pos, glm::vec3 offset);
+
     private:
         void loadGameObjects();
+
+
+        // Load a "sprite" from a file
+        // Takes a txt file as a parameter and
+        // loads the color pallet and color map
+        // for the sprite and adds that data to
+        // the pallet and collorArray vectors
+        void loadFromFile(std::string file);
 
         LveWindow lveWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
         LveDevice lveDevice{lveWindow};
         LveRenderer lveRenderer{lveWindow, lveDevice};
         std::vector<LveGameObject> gameObjects;
+
+        
+
+
+        //Sprite Stuff
+
+        // Holds the glm::vec3 definitions
+        // for colors in an image.
+        std::vector<glm::vec3> pallet;
+
+        // Holds the integer values of the
+        // colors in a pallet that make the
+        // image.
+        std::vector<std::vector<int>> colorArray;
+
     };
 }
 
+#endif //VULKANTEST_FIRST_APP_HPP
