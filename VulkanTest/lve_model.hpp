@@ -1,7 +1,10 @@
 //
 // Created by cdgira on 7/10/2023.
 //
-#pragma once
+
+#ifndef VULKANTEST_LVE_MODEL_HPP
+#define VULKANTEST_LVE_MODEL_HPP
+
 #include "lve_device.hpp"
 
 #define GLM_FORCE_RADIANS
@@ -14,7 +17,7 @@ namespace lve {
     class LveModel {
       public:
         struct Vertex {
-            glm::vec2 position;
+            glm::vec3 position;
             glm::vec3 color;
 
             static std::vector<VkVertexInputBindingDescription> getBindingDescriptions();
@@ -38,3 +41,4 @@ namespace lve {
     };
 }
 
+#endif //VULKANTEST_LVE_MODEL_HPP
