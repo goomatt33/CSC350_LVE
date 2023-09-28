@@ -2,12 +2,8 @@
 // Created by cdgira on 7/17/2023.
 //
 
-<<<<<<< HEAD
 #ifndef VULKANTEST_LVE_RENDERER_HPP
 #define VULKANTEST_LVE_RENDERER_HPP
-=======
-#pragma once
->>>>>>> 3abbcba (Updated for V16)
 
 #include "lve_device.hpp"
 #include "lve_swap_chain.hpp"
@@ -28,6 +24,7 @@ namespace lve {
         LveRenderer &operator=(const LveRenderer&) = delete;
 
         VkRenderPass getSwapChainRenderPass() const { return lveSwapChain->getRenderPass(); }
+        float getAspectRatio() const { return lveSwapChain->extentAspectRatio(); }
 
         bool isFrameInProgress() const { return isFrameStarted; }
 
@@ -61,8 +58,5 @@ namespace lve {
         bool isFrameStarted{false};
     };
 }
-<<<<<<< HEAD
 
 #endif //VULKANTEST_LVE_RENDERER_HPP
-=======
->>>>>>> 3abbcba (Updated for V16)

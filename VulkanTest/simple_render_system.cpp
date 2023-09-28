@@ -15,8 +15,7 @@
 namespace lve {
 
     struct SimplePushConstantData {
-        glm::mat2 transform{1.f};
-        glm::vec2 offset;
+        glm::mat4 transform{1.f};
         alignas(16) glm::vec3 color;
 
     };
@@ -63,56 +62,26 @@ namespace lve {
         pipelineConfig.pipelineLayout = pipelineLayout;
         lvePipeline = std::make_unique<LvePipeline>(
                 lveDevice,
-                "../shaders/simple_shader.vert.spv",
-                "../shaders/simple_shader.frag.spv",
+                "./shaders/simple_shader.vert.spv",
+                "./shaders/simple_shader.frag.spv",
                 pipelineConfig
         );
     }
-    void SimpleRenderSystem::renderGameObjects(VkCommandBuffer commandBuffer, std::vector<LveGameObject> &gameObjects) {
+
+    void SimpleRenderSystem::renderGameObjects(VkCommandBuffer commandBuffer, std::vector<LveGameObject> &gameObjects, const LveCamera &camera) {
         lvePipeline->bind(commandBuffer);
 
+        auto viewProjection = camera.getProjectionMatrix() * camera.getViewMatrix();
+
         for (auto &gameObject : gameObjects) {
-            //gameObject.transform2d.rotation = glm::mod(gameObject.transform2d.rotation + 0.001f, glm::two_pi<float>());
 
-            //gameObject.transform2d.scale = glm::mod(gameObject.transform2d.scale , glm::two_pi<float>());
+            //gameObject.transform.rotation.y = glm::mod(gameObject.transform.rotation.y + 0.001f, glm::two_pi<float>());
+            //gameObject.transform.rotation.x = glm::mod(gameObject.transform.rotation.x + 0.0005f, glm::two_pi<float>());
 
-            // If you're supposed to shrink
-            if(gameObject.shrink)
-            {
-                // Decrease scale
-                gameObject.transform2d.scale =
-                        {
-                        gameObject.transform2d.scale.x - 0.001,
-                        gameObject.transform2d.scale.y - 0.001
-                        };
-
-                // Increase rotation
-                gameObject.transform2d.rotation += 0.005f; //glm::mod(gameObject.transform2d.rotation + 0.001f, glm::two_pi<float>());
-
-                //If scale is less than or equal to .5
-                if(gameObject.transform2d.scale.x <= 0.5f)
-                    gameObject.shrink = false;  // Tell it to start growing
-            }
-            // If you're supposed to grow
-            else
-            {
-                // Increase the scale
-                gameObject.transform2d.scale =
-                        {
-                                gameObject.transform2d.scale.x + 0.001,
-                                gameObject.transform2d.scale.y + 0.001
-                        };
-                // Decrease the rotation
-                gameObject.transform2d.rotation -= 0.005f;
-                // If scale is greater than or equal to 1
-                if(gameObject.transform2d.scale.x >= 1.0f)
-                    gameObject.shrink = true; // tell it to start shrinking
-            }
 
             SimplePushConstantData push{};
-            push.offset = gameObject.transform2d.translation;
             push.color = gameObject.color;
-            push.transform = gameObject.transform2d.mat2();
+            push.transform = viewProjection*gameObject.transform.mat4();
 
             vkCmdPushConstants(
                     commandBuffer,
