@@ -1,8 +1,10 @@
+#Let me know if you want the windows version, is based off how he
+#has the code organized in the videos.
 cmake_minimum_required(VERSION 3.24)
-project(VulkanTest)
-
+project(<CompGraph>)
 set(CMAKE_CXX_STANDARD 17)
-
+add_subdirectory(lib)
+add_subdirectory(systems)
 find_package(PkgConfig REQUIRED)
 #Matrix Math
 find_package(glm REQUIRED)
@@ -14,13 +16,8 @@ find_package(Vulkan REQUIRED)
 #Shader Compiler
 find_program(glslc_executable NAMES glslc PATHS /Scratch/Vulkan/install/bin)
 
-#==============================================================================
-# COMPILE SHADERS
-#
-
 set(SHADER_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/shaders)
 set(SHADER_BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/shaders)
-
 file(GLOB SHADERS
         ${SHADER_SOURCE_DIR}/*.vert
         ${SHADER_SOURCE_DIR}/*.frag
@@ -33,32 +30,29 @@ file(GLOB SHADERS
         ${SHADER_SOURCE_DIR}/*.rgen
         ${SHADER_SOURCE_DIR}/*.rchit
         ${SHADER_SOURCE_DIR}/*.rmiss)
-
 foreach(source IN LISTS SHADERS)
     get_filename_component(FILENAME ${source} NAME)
     add_custom_command(
-            COMMAND
-            ${glslc_executable}
-            -o ${SHADER_BINARY_DIR}/${FILENAME}.spv
-            ${source}
-            OUTPUT ${SHADER_BINARY_DIR}/${FILENAME}.spv
-            DEPENDS ${source} ${SHADER_BINARY_DIR}
+            COMMAND ${glslc_executable} -o ${SHADER_BINARY_DIR}/${FILENAME}.spv ${source}
+            OUTPUT ${SHADER_BINARY_DIR}/${FILENAME}.spv DEPENDS ${source} ${SHADER_BINARY_DIR}
             COMMENT "Compiling ${FILENAME}"
     )
     list(APPEND SPV_SHADERS ${SHADER_BINARY_DIR}/${FILENAME}.spv)
 endforeach()
-
 add_custom_target(shaders ALL DEPENDS ${SPV_SHADERS})
-set(MY_SHADERS ${SPV_SHADERS} lve_game_object.hpp simple_render_system.cpp simple_render_system.cpp)
-
+set(MY_SHADERS ${SPV_SHADERS})
 ### END SHADER COMPILATION
-file(GLOB CPP_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 #Note we don’t need to bother with any of the .h or .hpp files.
-#set(LVE_INCLUDES main.cpp lve_window.hpp lve_window.cpp lve_model.cpp lve_swap_chain.cpp first_app.hpp first_app.cpp lve_pipeline.hpp lve_pipeline.cpp lve_device.hpp lve_device.cpp lve_swap_chain.cpp)
+set(SYSTEM_INCLUDES  ${CMAKE_CURRENT_SOURCE_DIR}/systems/simple_render_system.cpp ${CMAKE_CURRENT_SOURCE_DIR}/systems/point_light_system.cpp)
+set(LVE_INCLUDES systems/point_light_system.cpp lve_camera.cpp keyboard_movement_controller.cpp systems/simple_render_system.cpp lve_renderer.cpp first_app.cpp lve_device.cpp lve_model.cpp lve_pipeline.cpp lve_swap_chain.cpp lve_window.cpp main.cpp lve_game_object.cpp lve_descriptors.cpp lve_buffer.cpp lve_frame_info.hpp lve_frame_info.hpp
+        lve_image.cpp)
 #At some point he will add a systems directory to break up
 #the organization of the files, that will add new complexity to this
 #file. Luckily not much complexity.
-add_executable(VulkanTest ${CPP_FILES} ${MY_SHADERS})
+add_executable( VulkanTest main.cpp ${LVE_INCLUDES} ${MY_SHADERS})
+target_include_directories (VulkanTest PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/lib/tol ${CMAKE_CURRENT_SOURCE_DIR}/systems)
+
 target_sources(VulkanTest PRIVATE main.cpp)
 #We don't use the glm libraries till after video 8.
 target_link_libraries(VulkanTest PRIVATE Vulkan::Vulkan glm::glm ${GLFW_LIBRARIES})
+

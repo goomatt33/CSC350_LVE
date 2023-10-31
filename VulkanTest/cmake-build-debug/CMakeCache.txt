@@ -15,6 +15,15 @@
 ########################
 
 //Value Computed by CMake
+<CompGraph>_BINARY_DIR:STATIC=/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug
+
+//Value Computed by CMake
+<CompGraph>_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+<CompGraph>_SOURCE_DIR:STATIC=/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest
+
+//Value Computed by CMake
 <prj_BINARY_DIR:STATIC=/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug
 
 //Value Computed by CMake
@@ -157,7 +166,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=VulkanTest
+CMAKE_PROJECT_NAME:STATIC=<CompGraph>
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION:STATIC=0.9.9
@@ -382,7 +391,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=1
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

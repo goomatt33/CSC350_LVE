@@ -9,6 +9,8 @@
 #include "lve_game_object.hpp"
 #include "lve_device.hpp"
 #include "lve_renderer.hpp"
+#include "lve_descriptors.hpp"
+#include "lve_image.hpp"
 
 
 #include <memory>
@@ -29,55 +31,23 @@ namespace lve {
 
         void run();
 
-        struct Cube
-        {
-            LveModel::Vertex BackTopLeft;
-            LveModel::Vertex BackTopRight;
-            LveModel::Vertex BackBottomLeft;
-            LveModel::Vertex BackBottomRight;
-            
-            LveModel::Vertex FrontTopLeft;
-            LveModel::Vertex FrontTopRight;
-            LveModel::Vertex FrontBottomLeft;
-            LveModel::Vertex FrontBottomRight;
-
-            glm::vec3 color;
-        };
-
-        Cube MakeCube(float topFLX, float topFLY, float topFLZ, float size, int palletColor);
-
-        void MakeModel(LveDevice& device, glm::vec3 pos, glm::vec3 offset);
-
     private:
         void loadGameObjects();
 
-
-        // Load a "sprite" from a file
-        // Takes a txt file as a parameter and
-        // loads the color pallet and color map
-        // for the sprite and adds that data to
-        // the pallet and collorArray vectors
-        void loadFromFile(std::string file);
-
         LveWindow lveWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
         LveDevice lveDevice{lveWindow};
+        std::shared_ptr<LveImage> textureImage = LveImage::createImageFromFile(lveDevice, "../textures/Ch_Mai_95_D.png");
+
+        std::vector<std::shared_ptr<LveImage>> texVec;
+        // Here we need to setup the TextureMapping.
+        //createTextureImage();
+        //createTextureImageView();
+        // Here is where they create the VertexBuffer, IndexBuffer, and UniformBuffer.
         LveRenderer lveRenderer{lveWindow, lveDevice};
-        std::vector<LveGameObject> gameObjects;
 
-        
-
-
-        //Sprite Stuff
-
-        // Holds the glm::vec3 definitions
-        // for colors in an image.
-        std::vector<glm::vec3> pallet;
-
-        // Holds the integer values of the
-        // colors in a pallet that make the
-        // image.
-        std::vector<std::vector<int>> colorArray;
-
+        //note: Order of declaration is important.
+        std::unique_ptr<LveDescriptorPool> globalPool{};
+        LveGameObject::Map gameObjects;
     };
 }
 

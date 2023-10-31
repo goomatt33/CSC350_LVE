@@ -23,19 +23,9 @@ namespace lve {
             int lookRight = GLFW_KEY_RIGHT;
             int lookUp = GLFW_KEY_UP;
             int lookDown = GLFW_KEY_DOWN;
-            int lookAtOrigin = GLFW_KEY_SPACE;
-            int panKey = GLFW_KEY_R;
         };
 
         void moveInPlaneXZ(GLFWwindow* window, float deltaTime, LveGameObject& gameObject);
-
-
-
-        float orbitSpeed = 2.0f;
-        float rotAngle = 0.0f;
-
-        bool shouldPan = false;
-
 
         KeyMappings keys{};
         float moveSpeed{3.0f};

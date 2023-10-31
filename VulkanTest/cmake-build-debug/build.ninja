@@ -11,7 +11,7 @@
 # =============================================================================
 
 # =============================================================================
-# Project: VulkanTest
+# Project: <CompGraph>
 # Configurations: Debug
 # =============================================================================
 
@@ -44,7 +44,7 @@ cmake_ninja_workdir = /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-
 #############################################
 # Utility command for shaders
 
-build shaders: phony CMakeFiles/shaders /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.frag.spv /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.vert.spv
+build shaders: phony CMakeFiles/shaders /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.frag.spv /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.vert.spv /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.frag.spv /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.vert.spv
 
 # =============================================================================
 # Object build statements for EXECUTABLE target VulkanTest
@@ -53,68 +53,117 @@ build shaders: phony CMakeFiles/shaders /home/mb6457/CSC350/LVE/CSC350_LVE/Vulka
 #############################################
 # Order-only phony target for VulkanTest
 
-build cmake_object_order_depends_target_VulkanTest: phony || /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.frag.spv /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.vert.spv
+build cmake_object_order_depends_target_VulkanTest: phony || /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.frag.spv /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.vert.spv /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.frag.spv /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.vert.spv
+
+build CMakeFiles/VulkanTest.dir/main.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/main.cpp || cmake_object_order_depends_target_VulkanTest
+  DEP_FILE = CMakeFiles/VulkanTest.dir/main.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
+  OBJECT_DIR = CMakeFiles/VulkanTest.dir
+  OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
+
+build CMakeFiles/VulkanTest.dir/systems/point_light_system.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems/point_light_system.cpp || cmake_object_order_depends_target_VulkanTest
+  DEP_FILE = CMakeFiles/VulkanTest.dir/systems/point_light_system.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
+  OBJECT_DIR = CMakeFiles/VulkanTest.dir
+  OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir/systems
+
+build CMakeFiles/VulkanTest.dir/lve_camera.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lve_camera.cpp || cmake_object_order_depends_target_VulkanTest
+  DEP_FILE = CMakeFiles/VulkanTest.dir/lve_camera.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
+  OBJECT_DIR = CMakeFiles/VulkanTest.dir
+  OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
+
+build CMakeFiles/VulkanTest.dir/keyboard_movement_controller.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/keyboard_movement_controller.cpp || cmake_object_order_depends_target_VulkanTest
+  DEP_FILE = CMakeFiles/VulkanTest.dir/keyboard_movement_controller.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
+  OBJECT_DIR = CMakeFiles/VulkanTest.dir
+  OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
+
+build CMakeFiles/VulkanTest.dir/systems/simple_render_system.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems/simple_render_system.cpp || cmake_object_order_depends_target_VulkanTest
+  DEP_FILE = CMakeFiles/VulkanTest.dir/systems/simple_render_system.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
+  OBJECT_DIR = CMakeFiles/VulkanTest.dir
+  OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir/systems
+
+build CMakeFiles/VulkanTest.dir/lve_renderer.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lve_renderer.cpp || cmake_object_order_depends_target_VulkanTest
+  DEP_FILE = CMakeFiles/VulkanTest.dir/lve_renderer.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
+  OBJECT_DIR = CMakeFiles/VulkanTest.dir
+  OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
 
 build CMakeFiles/VulkanTest.dir/first_app.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/first_app.cpp || cmake_object_order_depends_target_VulkanTest
   DEP_FILE = CMakeFiles/VulkanTest.dir/first_app.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -isystem /usr/lib
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
   OBJECT_DIR = CMakeFiles/VulkanTest.dir
   OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
 
 build CMakeFiles/VulkanTest.dir/lve_device.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lve_device.cpp || cmake_object_order_depends_target_VulkanTest
   DEP_FILE = CMakeFiles/VulkanTest.dir/lve_device.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -isystem /usr/lib
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
   OBJECT_DIR = CMakeFiles/VulkanTest.dir
   OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
 
 build CMakeFiles/VulkanTest.dir/lve_model.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lve_model.cpp || cmake_object_order_depends_target_VulkanTest
   DEP_FILE = CMakeFiles/VulkanTest.dir/lve_model.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -isystem /usr/lib
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
   OBJECT_DIR = CMakeFiles/VulkanTest.dir
   OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
 
 build CMakeFiles/VulkanTest.dir/lve_pipeline.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lve_pipeline.cpp || cmake_object_order_depends_target_VulkanTest
   DEP_FILE = CMakeFiles/VulkanTest.dir/lve_pipeline.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -isystem /usr/lib
-  OBJECT_DIR = CMakeFiles/VulkanTest.dir
-  OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
-
-build CMakeFiles/VulkanTest.dir/lve_renderer.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lve_renderer.cpp || cmake_object_order_depends_target_VulkanTest
-  DEP_FILE = CMakeFiles/VulkanTest.dir/lve_renderer.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -isystem /usr/lib
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
   OBJECT_DIR = CMakeFiles/VulkanTest.dir
   OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
 
 build CMakeFiles/VulkanTest.dir/lve_swap_chain.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lve_swap_chain.cpp || cmake_object_order_depends_target_VulkanTest
   DEP_FILE = CMakeFiles/VulkanTest.dir/lve_swap_chain.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -isystem /usr/lib
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
   OBJECT_DIR = CMakeFiles/VulkanTest.dir
   OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
 
 build CMakeFiles/VulkanTest.dir/lve_window.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lve_window.cpp || cmake_object_order_depends_target_VulkanTest
   DEP_FILE = CMakeFiles/VulkanTest.dir/lve_window.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -isystem /usr/lib
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
   OBJECT_DIR = CMakeFiles/VulkanTest.dir
   OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
 
-build CMakeFiles/VulkanTest.dir/main.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/main.cpp || cmake_object_order_depends_target_VulkanTest
-  DEP_FILE = CMakeFiles/VulkanTest.dir/main.cpp.o.d
+build CMakeFiles/VulkanTest.dir/lve_game_object.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lve_game_object.cpp || cmake_object_order_depends_target_VulkanTest
+  DEP_FILE = CMakeFiles/VulkanTest.dir/lve_game_object.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -isystem /usr/lib
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
   OBJECT_DIR = CMakeFiles/VulkanTest.dir
   OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
 
-build CMakeFiles/VulkanTest.dir/simple_render_system.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/simple_render_system.cpp || cmake_object_order_depends_target_VulkanTest
-  DEP_FILE = CMakeFiles/VulkanTest.dir/simple_render_system.cpp.o.d
+build CMakeFiles/VulkanTest.dir/lve_descriptors.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lve_descriptors.cpp || cmake_object_order_depends_target_VulkanTest
+  DEP_FILE = CMakeFiles/VulkanTest.dir/lve_descriptors.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -isystem /usr/lib
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
+  OBJECT_DIR = CMakeFiles/VulkanTest.dir
+  OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
+
+build CMakeFiles/VulkanTest.dir/lve_buffer.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lve_buffer.cpp || cmake_object_order_depends_target_VulkanTest
+  DEP_FILE = CMakeFiles/VulkanTest.dir/lve_buffer.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
+  OBJECT_DIR = CMakeFiles/VulkanTest.dir
+  OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
+
+build CMakeFiles/VulkanTest.dir/lve_image.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lve_image.cpp || cmake_object_order_depends_target_VulkanTest
+  DEP_FILE = CMakeFiles/VulkanTest.dir/lve_image.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
   OBJECT_DIR = CMakeFiles/VulkanTest.dir
   OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
 
@@ -126,7 +175,7 @@ build CMakeFiles/VulkanTest.dir/simple_render_system.cpp.o: CXX_COMPILER__Vulkan
 #############################################
 # Link the executable VulkanTest
 
-build VulkanTest: CXX_EXECUTABLE_LINKER__VulkanTest_Debug CMakeFiles/VulkanTest.dir/first_app.cpp.o CMakeFiles/VulkanTest.dir/lve_device.cpp.o CMakeFiles/VulkanTest.dir/lve_model.cpp.o CMakeFiles/VulkanTest.dir/lve_pipeline.cpp.o CMakeFiles/VulkanTest.dir/lve_renderer.cpp.o CMakeFiles/VulkanTest.dir/lve_swap_chain.cpp.o CMakeFiles/VulkanTest.dir/lve_window.cpp.o CMakeFiles/VulkanTest.dir/main.cpp.o CMakeFiles/VulkanTest.dir/simple_render_system.cpp.o | /usr/lib/x86_64-linux-gnu/libvulkan.so
+build VulkanTest: CXX_EXECUTABLE_LINKER__VulkanTest_Debug CMakeFiles/VulkanTest.dir/main.cpp.o CMakeFiles/VulkanTest.dir/systems/point_light_system.cpp.o CMakeFiles/VulkanTest.dir/lve_camera.cpp.o CMakeFiles/VulkanTest.dir/keyboard_movement_controller.cpp.o CMakeFiles/VulkanTest.dir/systems/simple_render_system.cpp.o CMakeFiles/VulkanTest.dir/lve_renderer.cpp.o CMakeFiles/VulkanTest.dir/first_app.cpp.o CMakeFiles/VulkanTest.dir/lve_device.cpp.o CMakeFiles/VulkanTest.dir/lve_model.cpp.o CMakeFiles/VulkanTest.dir/lve_pipeline.cpp.o CMakeFiles/VulkanTest.dir/lve_swap_chain.cpp.o CMakeFiles/VulkanTest.dir/lve_window.cpp.o CMakeFiles/VulkanTest.dir/lve_game_object.cpp.o CMakeFiles/VulkanTest.dir/lve_descriptors.cpp.o CMakeFiles/VulkanTest.dir/lve_buffer.cpp.o CMakeFiles/VulkanTest.dir/lve_image.cpp.o | /usr/lib/x86_64-linux-gnu/libvulkan.so
   FLAGS = -g
   LINK_LIBRARIES = /usr/lib/x86_64-linux-gnu/libvulkan.so  -lglfw
   OBJECT_DIR = CMakeFiles/VulkanTest.dir
@@ -162,7 +211,25 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 #############################################
 # Phony custom command for CMakeFiles/shaders
 
-build CMakeFiles/shaders | ${cmake_ninja_workdir}CMakeFiles/shaders: phony /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.frag.spv /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.vert.spv
+build CMakeFiles/shaders | ${cmake_ninja_workdir}CMakeFiles/shaders: phony /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.frag.spv /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.vert.spv /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.frag.spv /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.vert.spv
+
+
+#############################################
+# Custom command for /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.frag.spv
+
+build /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.frag.spv: CUSTOM_COMMAND /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.frag /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders
+  COMMAND = cd /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug && /Scratch/Vulkan/install/bin/glslc -o /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.frag.spv /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.frag
+  DESC = Compiling point_light.frag
+  restat = 1
+
+
+#############################################
+# Custom command for /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.vert.spv
+
+build /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.vert.spv: CUSTOM_COMMAND /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.vert /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders
+  COMMAND = cd /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug && /Scratch/Vulkan/install/bin/glslc -o /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.vert.spv /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/point_light.vert
+  DESC = Compiling point_light.vert
+  restat = 1
 
 
 #############################################
@@ -183,6 +250,62 @@ build /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.vert.s
   restat = 1
 
 # =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for edit_cache
+
+build lib/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug/lib && /opt/clion-2022.3.3/bin/cmake/linux/x64/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build lib/edit_cache: phony lib/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build lib/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug/lib && /opt/clion-2022.3.3/bin/cmake/linux/x64/bin/cmake --regenerate-during-build -S/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -B/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build lib/rebuild_cache: phony lib/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for edit_cache
+
+build systems/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug/systems && /opt/clion-2022.3.3/bin/cmake/linux/x64/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build systems/edit_cache: phony systems/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build systems/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug/systems && /opt/clion-2022.3.3/bin/cmake/linux/x64/bin/cmake --regenerate-during-build -S/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -B/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build systems/rebuild_cache: phony systems/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
 # Target aliases.
 
 # =============================================================================
@@ -193,7 +316,21 @@ build /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/shaders/simple_shader.vert.s
 #############################################
 # Folder: /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug
 
-build all: phony shaders VulkanTest
+build all: phony shaders VulkanTest lib/all systems/all
+
+# =============================================================================
+
+#############################################
+# Folder: /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug/lib
+
+build lib/all: phony
+
+# =============================================================================
+
+#############################################
+# Folder: /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/cmake-build-debug/systems
+
+build systems/all: phony
 
 # =============================================================================
 # Built-in targets
@@ -202,14 +339,14 @@ build all: phony shaders VulkanTest
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/CMakeLists.txt /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCXXInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU-C.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU-CXX.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindPackageHandleStandardArgs.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindPackageMessage.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindPkgConfig.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindVulkan.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU-C.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU-CXX.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/UnixPaths.cmake /usr/lib/cmake/glm/glmConfig-version.cmake /usr/lib/cmake/glm/glmConfig.cmake CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeCXXCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/CMakeLists.txt /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/CMakeLists.txt /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems/CMakeLists.txt /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCXXInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU-C.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU-CXX.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindPackageHandleStandardArgs.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindPackageMessage.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindPkgConfig.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindVulkan.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU-C.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU-CXX.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/UnixPaths.cmake /usr/lib/cmake/glm/glmConfig-version.cmake /usr/lib/cmake/glm/glmConfig.cmake CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeCXXCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/CMakeLists.txt /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCXXInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU-C.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU-CXX.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindPackageHandleStandardArgs.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindPackageMessage.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindPkgConfig.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindVulkan.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU-C.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU-CXX.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/UnixPaths.cmake /usr/lib/cmake/glm/glmConfig-version.cmake /usr/lib/cmake/glm/glmConfig.cmake CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeCXXCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake: phony
+build /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/CMakeLists.txt /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/CMakeLists.txt /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems/CMakeLists.txt /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCXXInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU-C.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU-CXX.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Compiler/GNU.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindPackageHandleStandardArgs.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindPackageMessage.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindPkgConfig.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/FindVulkan.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU-C.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU-CXX.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux-GNU.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/Linux.cmake /opt/clion-2022.3.3/bin/cmake/linux/x64/share/cmake-3.24/Modules/Platform/UnixPaths.cmake /usr/lib/cmake/glm/glmConfig-version.cmake /usr/lib/cmake/glm/glmConfig.cmake CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeCXXCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake: phony
 
 
 #############################################

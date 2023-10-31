@@ -39,8 +39,6 @@ namespace lve {
             }
 
         }
-
-
     }
 
     void LveRenderer::createCommandBuffers() {
@@ -110,6 +108,7 @@ namespace lve {
         }
         isFrameStarted = false;
         currentFrameIndex = (currentFrameIndex + 1) % LveSwapChain::MAX_FRAMES_IN_FLIGHT;
+
     }
 
     void LveRenderer::beginSwapChainRenderPass(VkCommandBuffer commandBuffer) {

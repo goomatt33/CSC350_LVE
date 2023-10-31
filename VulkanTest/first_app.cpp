@@ -5,7 +5,9 @@
 
 #include "keyboard_movement_controller.hpp"
 #include "lve_camera.hpp"
-#include "simple_render_system.hpp"
+#include "systems/simple_render_system.hpp"
+#include "systems/point_light_system.hpp"
+#include "lve_buffer.hpp"
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
@@ -16,23 +18,80 @@
 #include <iostream>
 #include <array>
 #include <chrono>
-#include <fstream>
-#include <sstream>
 
 namespace lve {
 
+
+
     FirstApp::FirstApp() {
+        // We need to add a pool for the textureImages.
+        globalPool = LveDescriptorPool::Builder(lveDevice)
+                .setMaxSets(LveSwapChain::MAX_FRAMES_IN_FLIGHT)
+                .addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, LveSwapChain::MAX_FRAMES_IN_FLIGHT)
+                .addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 3 * LveSwapChain::MAX_FRAMES_IN_FLIGHT) // This is for the texture maps.
+                .build();
+
         loadGameObjects();
+        // Texture Image loaded in first_app.hpp file.
     }
 
     FirstApp::~FirstApp() { }
 
     void FirstApp::run() {
-        SimpleRenderSystem simpleRenderSystem{lveDevice, lveRenderer.getSwapChainRenderPass()};
+
+        // The GlobalUbo is a fixed size so we can setup this up here then load in the data later.
+        // So I need to load in the images first.
+        std::vector<std::unique_ptr<LveBuffer>> uboBuffers(LveSwapChain::MAX_FRAMES_IN_FLIGHT);
+        for (int i=0;i<uboBuffers.size();i++) {
+            uboBuffers[i] = std::make_unique<LveBuffer>(
+                    lveDevice,
+                    sizeof(GlobalUbo),
+                    1,
+                    VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+                    VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+            uboBuffers[i]->map();
+        }
+
+        //Add the three images to an vector
+        texVec.push_back(LveImage::createImageFromFile(lveDevice, "../textures/Ch_Mai_95_D.png"));
+        texVec.push_back(LveImage::createImageFromFile(lveDevice, "../textures/material_0.png"));
+        texVec.push_back(LveImage::createImageFromFile(lveDevice, "../textures/material_1.png"));
+
+
+        // Added two additional bindings from the original code
+        // for the two extra images
+        auto globalSetLayout = LveDescriptorSetLayout::Builder(lveDevice)
+                .addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,VK_SHADER_STAGE_ALL_GRAPHICS)
+                .addBinding(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,VK_SHADER_STAGE_FRAGMENT_BIT)
+                .addBinding(2, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,VK_SHADER_STAGE_FRAGMENT_BIT) // Added 2nd texture
+                .addBinding(3, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,VK_SHADER_STAGE_FRAGMENT_BIT) // Added 3rd texture
+
+                .build();
+        // Need to see if anything needs to be done here for the texture maps.
+        // Something isn't beting setup right for the Image Info, information is not getting freed correctly.
+        std::vector<VkDescriptorSet> globalDescriptorSets(LveSwapChain::MAX_FRAMES_IN_FLIGHT);
+        for (int i=0;i<globalDescriptorSets.size();i++) {
+            auto bufferInfo = uboBuffers[i]->descriptorInfo();
+            //auto imageInfo = textureImage->descriptorImageInfo();
+            //auto imageInfo = texVec[i]->descriptorImageInfo();
+            auto imageInfo1 = texVec[0]->descriptorImageInfo();     // Get the info for the first texture
+            auto imageInfo2 = texVec[1]->descriptorImageInfo();     // Get the info for the second texture
+            auto imageInfo3 = texVec[2]->descriptorImageInfo();     // Third texture
+            LveDescriptorWriter(*globalSetLayout, *globalPool)
+                .writeBuffer(0, &bufferInfo)
+                .writeImage(1, &imageInfo1)     // Write the first texture to the descriptor set
+                .writeImage(2, &imageInfo2)     // Write the second
+                .writeImage(3, &imageInfo3)     // Write the third
+                .build(globalDescriptorSets[i]); // Should only build a set once.
+        }
+
+        SimpleRenderSystem simpleRenderSystem{lveDevice, lveRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout()};
+        PointLightSystem pointLightSystem{lveDevice, lveRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout()};
         LveCamera camera{};
         camera.setViewTarget(glm::vec3(-1.f, -2.f, -2.f), glm::vec3(0.f, 0.f, 2.5f));
 
         auto viewerObject = LveGameObject::createGameObject();
+        viewerObject.transform.translation.z = -2.5f;
         KeyboardMovementController cameraController{};
 
         auto currentTime = std::chrono::high_resolution_clock::now();
@@ -48,10 +107,23 @@ namespace lve {
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
             float aspect = lveRenderer.getAspectRatio();
-            camera.setPerspectiveProjection(glm::radians(50.f), aspect, 0.1f, 10.f);
+            camera.setPerspectiveProjection(glm::radians(50.f), aspect, 0.1f, 100.f);
             if (auto commandBuffer = lveRenderer.beginFrame()) {
+                int frameIndex = lveRenderer.getFrameIndex();
+                FrameInfo frameInfo{frameIndex, frameTime, commandBuffer,camera, globalDescriptorSets[frameIndex], gameObjects};
+                //update
+                GlobalUbo ubo{};
+                ubo.projection = camera.getProjection();
+                ubo.view = camera.getView();
+                ubo.inverseView = camera.getInverseView();
+                pointLightSystem.update(frameInfo, ubo);
+                uboBuffers[frameIndex]->writeToBuffer(&ubo);
+                uboBuffers[frameIndex]->flush();
+
+                //render
                 lveRenderer.beginSwapChainRenderPass(commandBuffer);
-                simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects,camera);
+                simpleRenderSystem.render(frameInfo); // Solid Objects
+                pointLightSystem.render(frameInfo);  // Transparent Objects
                 lveRenderer.endSwapChainRenderPass(commandBuffer);
                 lveRenderer.endFrame();
             }
@@ -61,225 +133,108 @@ namespace lve {
         vkDeviceWaitIdle(lveDevice.device());
     }
 
-    // temporary helper function, creates a 1x1x1 cube centered at offset
+    // temporary helper function, creates a 1x1x1 cube centered at offset with an index buffer
     std::unique_ptr<LveModel> createCubeModel(LveDevice& device, glm::vec3 offset) {
-        std::vector<LveModel::Vertex> vertices{
-
+        LveModel::Builder modelBuilder{};
+        modelBuilder.vertices = {
                 // left face (white)
                 {{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
                 {{-.5f, .5f, .5f}, {.9f, .9f, .9f}},
                 {{-.5f, -.5f, .5f}, {.9f, .9f, .9f}},
-                {{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
                 {{-.5f, .5f, -.5f}, {.9f, .9f, .9f}},
-                {{-.5f, .5f, .5f}, {.9f, .9f, .9f}},
 
                 // right face (yellow)
                 {{.5f, -.5f, -.5f}, {.8f, .8f, .1f}},
                 {{.5f, .5f, .5f}, {.8f, .8f, .1f}},
                 {{.5f, -.5f, .5f}, {.8f, .8f, .1f}},
-                {{.5f, -.5f, -.5f}, {.8f, .8f, .1f}},
                 {{.5f, .5f, -.5f}, {.8f, .8f, .1f}},
-                {{.5f, .5f, .5f}, {.8f, .8f, .1f}},
 
                 // top face (orange, remember y axis points down)
                 {{-.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
                 {{.5f, -.5f, .5f}, {.9f, .6f, .1f}},
                 {{-.5f, -.5f, .5f}, {.9f, .6f, .1f}},
-                {{-.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
                 {{.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
-                {{.5f, -.5f, .5f}, {.9f, .6f, .1f}},
 
                 // bottom face (red)
                 {{-.5f, .5f, -.5f}, {.8f, .1f, .1f}},
                 {{.5f, .5f, .5f}, {.8f, .1f, .1f}},
                 {{-.5f, .5f, .5f}, {.8f, .1f, .1f}},
-                {{-.5f, .5f, -.5f}, {.8f, .1f, .1f}},
                 {{.5f, .5f, -.5f}, {.8f, .1f, .1f}},
-                {{.5f, .5f, .5f}, {.8f, .1f, .1f}},
 
                 // nose face (blue)
                 {{-.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
                 {{.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
                 {{-.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
-                {{-.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
                 {{.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
-                {{.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
 
                 // tail face (green)
                 {{-.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
                 {{.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
                 {{-.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
-                {{-.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
                 {{.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
-                {{.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
-
         };
-        for (auto& v : vertices) {
+        for (auto& v : modelBuilder.vertices) {
             v.position += offset;
         }
-        return std::make_unique<LveModel>(device, vertices);
+
+        modelBuilder.indices = {0,  1,  2,  0,  3,  1,  4,  5,  6,  4,  7,  5,  8,  9,  10, 8,  11, 9,
+                                12, 13, 14, 12, 15, 13, 16, 17, 18, 16, 19, 17, 20, 21, 22, 20, 23, 21};
+
+        return std::make_unique<LveModel>(device, modelBuilder);
     }
-
-    FirstApp::Cube FirstApp::MakeCube(float topFLX, float topFLY, float topFLZ, float size, int palletColor)
-    {
-        lve::FirstApp::Cube cu = {};
-
-        cu.FrontTopLeft.position = glm::vec3(topFLX, topFLY, topFLZ);
-        cu.FrontTopRight.position = glm::vec3(topFLX + size, topFLY, topFLZ);
-        cu.FrontBottomLeft.position = glm::vec3(topFLX, topFLY + size, topFLZ);
-        cu.FrontBottomRight.position = glm::vec3(topFLX + size, topFLY + size, topFLZ);
-
-        cu.BackTopLeft.position = glm::vec3(topFLX, topFLY, topFLZ - size);
-        cu.BackTopRight.position = glm::vec3(topFLX + size, topFLY, topFLZ - size);
-        cu.BackBottomLeft.position = glm::vec3(topFLX, topFLY + size, topFLZ - size);
-        cu.BackBottomRight.position = glm::vec3(topFLX + size, topFLY + size, topFLZ - size);
-
-        cu.FrontTopLeft.color = pallet[palletColor];
-        cu.FrontTopRight.color = pallet[palletColor];
-        cu.FrontBottomLeft.color = pallet[palletColor];
-        cu.FrontBottomRight.color = pallet[palletColor];
-
-        cu.BackTopLeft.color = pallet[palletColor];
-        cu.BackTopRight.color = pallet[palletColor];
-        cu.BackBottomLeft.color = pallet[palletColor];
-        cu.BackBottomRight.color = pallet[palletColor];
-
-        cu.color = pallet[palletColor];
-        
-        return cu;
-    }
-
-    void FirstApp::MakeModel(LveDevice& device, glm::vec3 pos, glm::vec3 offset)
-    {
-        Cube cube = MakeCube(-0.5f, -0.5f, 0.5f, 1.0f, 5);
-
-        std::vector<Cube> cubes;
-
-        float currentx = pos.x;
-        float currenty = pos.y;
-        float s = 0.25;
-
-        for (int y = 0; y < colorArray.size(); y++) {
-            for (int x = 0; x < colorArray[y].size(); x++) {
-                cubes.push_back(MakeCube(currentx, currenty, pos.z, s, colorArray[y][x]));
-                currentx += s;
-            }
-            currentx = pos.x;
-            currenty += s;
-        }
-
-        for (int i = 0; i < cubes.size(); i++)
-        {
-            std::vector<LveModel::Vertex> vertices
-            {
-                // left face 
-                    cubes[i].FrontTopLeft,
-                    cubes[i].BackTopLeft,
-                    cubes[i].BackBottomLeft,
-                    cubes[i].FrontTopLeft,
-                    cubes[i].BackBottomLeft,
-                    cubes[i].FrontBottomLeft,
-
-                    // right face (yellow)
-                    cubes[i].FrontTopRight,
-                    cubes[i].BackTopRight,
-                    cubes[i].BackBottomRight,
-                    cubes[i].FrontTopRight,
-                    cubes[i].BackBottomRight,
-                    cubes[i].FrontBottomRight,
-
-                    // top face (orange, remember y axis points down)
-                    cubes[i].FrontTopLeft,
-                    cubes[i].FrontTopRight,
-                    cubes[i].BackTopRight,
-                    cubes[i].FrontTopLeft,
-                    cubes[i].BackTopRight,
-                    cubes[i].BackTopLeft,
-
-                    // bottom face (red)
-                    cubes[i].FrontBottomLeft,
-                    cubes[i].FrontBottomRight,
-                    cubes[i].BackBottomRight,
-                    cubes[i].FrontBottomLeft,
-                    cubes[i].BackBottomRight,
-                    cubes[i].BackBottomLeft,
-
-                    // nose face (blue)
-                    cubes[i].FrontTopLeft,
-                    cubes[i].FrontTopRight,
-                    cubes[i].FrontBottomRight,
-                    cubes[i].FrontTopLeft,
-                    cubes[i].FrontBottomRight,
-                    cubes[i].FrontBottomLeft,
-
-                    // tail face (green)
-                    cubes[i].BackTopLeft,
-                    cubes[i].BackTopRight,
-                    cubes[i].BackBottomRight,
-                    cubes[i].BackTopLeft,
-                    cubes[i].BackBottomRight,
-                    cubes[i].BackBottomLeft,
-            };
-            for (auto& v : vertices) {
-                v.position += offset;
-            }
-
-            auto lveModel = std::make_shared<LveModel>(lveDevice, vertices);
-            auto triangleGameObject = LveGameObject::createGameObject();
-            triangleGameObject.model = lveModel;
-            triangleGameObject.color = cubes[i].color;
-            triangleGameObject.transform.translation = pos;
-            gameObjects.push_back(std::move(triangleGameObject));
-        }
-
-        //return std::make_unique<LveModel>(device, vertices);
-    }
-
-
 
     void FirstApp::loadGameObjects() {
 
-        loadFromFile("./image.txt");
+        // Load all three models into game objects, apply their transforms
+        // and emplace them into the scene
+        std::shared_ptr<LveModel> lveModel = LveModel::createModelFromFile(lveDevice, "../models/SU-27CGLOWPOLY.obj");
+        auto airoplane = LveGameObject::createGameObject();
+        airoplane.model = lveModel;
+        airoplane.transform.translation = {0.f, 2.f, 0.f};
+        airoplane.transform.scale = {1.f, 1.f, 1.0f};
+        airoplane.transform.rotation = {0.0f, 0.0f, glm::radians(180.0f)};
 
-        MakeModel(lveDevice, { -0.5f, -0.5f, 0.f }, { 0.0f, 0.0f, 0.0f });
+        airoplane.textureBinding = 3;
+        gameObjects.emplace(airoplane.getId(),std::move(airoplane));
+
+        lveModel = LveModel::createModelFromFile(lveDevice, "../models/dergen.obj");
+        auto dergen = LveGameObject::createGameObject();
+        dergen.model = lveModel;
+        dergen.transform.translation = {0.f, 50.0f, 50.f};
+        dergen.transform.scale = {0.1f, 0.1f, 0.1f};
+        dergen.transform.rotation = {0.0f, glm::radians(180.0f), 0.0f};
+        dergen.textureBinding = 2;
+        gameObjects.emplace(dergen.getId(),std::move(dergen));
+
+        lveModel = LveModel::createModelFromFile(lveDevice, "../models/Mai.obj");
+        auto mai = LveGameObject::createGameObject();
+        mai.model = lveModel;
+        mai.transform.translation = {0.f, 1.35f, 0.f};
+        mai.transform.scale = {1.f, 1.f, 1.f};
+        mai.transform.rotation = { glm::radians(180.0f), glm::radians(180.0f), 0.0f};
+        mai.textureBinding = 1;
+        gameObjects.emplace(mai.getId(),std::move(mai));
+
+        std::vector<glm::vec3> lightColors{
+            {1.f, .1f, .1f},
+            {.1f, .1f, 1.f},
+            {.1f, 1.f, .1f},
+            {1.f, 1.f, .1f},
+            {.1f, 1.f, 1.f},
+            {1.f, 1.f, 1.f}  //
+        };
+
+        for (int i=0;i<lightColors.size();i++) {
+            auto pointLight = LveGameObject::makePointLight(0.2f);
+            pointLight.color = lightColors[i];
+            auto rotateLight = glm::rotate(glm::mat4(1.f),  (i * glm::two_pi<float>()) / lightColors.size(), {0.f, -1.f, 0.f});
+            pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-1.f, -1.f, -1.f, 1.f));
+            gameObjects.emplace(pointLight.getId(), std::move(pointLight));
+        }
 
     }
 
-    void FirstApp::loadFromFile(std::string File) {
-        std::string line;
-        std::ifstream file(File);
 
 
-        for (int i = 0; i < 9; i++)
-        {
-            std::getline(file, line);
-            std::stringstream ss(line);
-            std::string word;
-            std::vector<float> rgb;
-            while (!ss.eof())
-            {
-                std::getline(ss, word, ',');
-                rgb.push_back(std::stof(word));
-            }
-            glm::vec3 color = { rgb[0], rgb[1], rgb[2] };
-
-            pallet.push_back(color);
-        }
-
-        for (int i = 0; i < 8; i++)
-        {
-            std::getline(file, line);
-            std::stringstream ss(line);
-            std::string word;
-            std::vector<int> nums;
-            while (!ss.eof())
-            {
-                std::getline(ss, word, ',');
-                nums.push_back(std::stoi(word));
-            }
-            colorArray.push_back(nums);
-        }
-
-    }
 }
 

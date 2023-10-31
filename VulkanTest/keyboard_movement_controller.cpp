@@ -5,17 +5,16 @@
 #include "keyboard_movement_controller.hpp"
 
 #include <limits>
-#include <iostream>
 
 namespace lve {
 
     void KeyboardMovementController::moveInPlaneXZ(GLFWwindow *window, float dt, LveGameObject &gameObject) {
         glm::vec3 rotate{0};
         if (glfwGetKey(window, keys.lookLeft) == GLFW_PRESS) {
-            rotate.y += 1.f;
+            rotate.y -= 1.f;
         }
         if (glfwGetKey(window, keys.lookRight) == GLFW_PRESS) {
-            rotate.y -= 1.f;
+            rotate.y += 1.f;
         }
         if (glfwGetKey(window, keys.lookUp) == GLFW_PRESS) {
             rotate.x += 1.f;
@@ -25,35 +24,6 @@ namespace lve {
         }
         if (glm::dot(rotate, rotate) > std::numeric_limits<float>::epsilon()) {
             gameObject.transform.rotation += (lookSpeed * dt * glm::normalize(rotate));
-        }
-
-        if (glfwGetKey(window, keys.lookAtOrigin))
-        {
-            gameObject.transform.rotation = { 0.0f,0.0f,0.0f };
-            gameObject.transform.translation = { 0.0f, 0.0f, -3.f };
-            rotAngle = 0.0f;
-            if (shouldPan)
-                shouldPan = !shouldPan;
-        }
-        
-        if (glfwGetKey(window, keys.panKey) && !shouldPan)
-        {
-            shouldPan = true;
-            gameObject.transform.translation = { 0.0f, 0.0f, -3.f };
-            gameObject.transform.rotation = { 0.0f,0.0f,0.0f };
-        }
-
-        if (shouldPan)
-        {
-            rotAngle += glm::radians(orbitSpeed) / 100.0f;
-            if (rotAngle >= glm::two_pi<float>())
-            {
-                rotAngle = 0.0f;
-                shouldPan = false;
-            }
-            gameObject.transform.rotation = { 0.0f, -rotAngle, 0.0f };
-            gameObject.transform.translation = { (3.0f * glm::sin(rotAngle)), 0.0f, (-3.0f * glm::cos(rotAngle)) };
-            //std::cout << "x: " << (3.0f * glm::sin(rot_angle)) << " z: " << (-3.0f * glm::cos(rot_angle)) << "\n";
         }
 
         gameObject.transform.rotation.x = glm::clamp(gameObject.transform.rotation.x, -1.5f,1.5f);
