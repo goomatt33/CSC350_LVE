@@ -167,6 +167,27 @@ build CMakeFiles/VulkanTest.dir/lve_image.cpp.o: CXX_COMPILER__VulkanTest_Debug 
   OBJECT_DIR = CMakeFiles/VulkanTest.dir
   OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir
 
+build CMakeFiles/VulkanTest.dir/gameObjects/MovingGameObject.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/gameObjects/MovingGameObject.cpp || cmake_object_order_depends_target_VulkanTest
+  DEP_FILE = CMakeFiles/VulkanTest.dir/gameObjects/MovingGameObject.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
+  OBJECT_DIR = CMakeFiles/VulkanTest.dir
+  OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir/gameObjects
+
+build CMakeFiles/VulkanTest.dir/gameObjects/Actor.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/gameObjects/Actor.cpp || cmake_object_order_depends_target_VulkanTest
+  DEP_FILE = CMakeFiles/VulkanTest.dir/gameObjects/Actor.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
+  OBJECT_DIR = CMakeFiles/VulkanTest.dir
+  OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir/gameObjects
+
+build CMakeFiles/VulkanTest.dir/Animations/Animation.cpp.o: CXX_COMPILER__VulkanTest_Debug /home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/Animations/Animation.cpp || cmake_object_order_depends_target_VulkanTest
+  DEP_FILE = CMakeFiles/VulkanTest.dir/Animations/Animation.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/lib/tol -I/home/mb6457/CSC350/LVE/CSC350_LVE/VulkanTest/systems -isystem /usr/lib
+  OBJECT_DIR = CMakeFiles/VulkanTest.dir
+  OBJECT_FILE_DIR = CMakeFiles/VulkanTest.dir/Animations
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target VulkanTest
@@ -175,7 +196,7 @@ build CMakeFiles/VulkanTest.dir/lve_image.cpp.o: CXX_COMPILER__VulkanTest_Debug 
 #############################################
 # Link the executable VulkanTest
 
-build VulkanTest: CXX_EXECUTABLE_LINKER__VulkanTest_Debug CMakeFiles/VulkanTest.dir/main.cpp.o CMakeFiles/VulkanTest.dir/systems/point_light_system.cpp.o CMakeFiles/VulkanTest.dir/lve_camera.cpp.o CMakeFiles/VulkanTest.dir/keyboard_movement_controller.cpp.o CMakeFiles/VulkanTest.dir/systems/simple_render_system.cpp.o CMakeFiles/VulkanTest.dir/lve_renderer.cpp.o CMakeFiles/VulkanTest.dir/first_app.cpp.o CMakeFiles/VulkanTest.dir/lve_device.cpp.o CMakeFiles/VulkanTest.dir/lve_model.cpp.o CMakeFiles/VulkanTest.dir/lve_pipeline.cpp.o CMakeFiles/VulkanTest.dir/lve_swap_chain.cpp.o CMakeFiles/VulkanTest.dir/lve_window.cpp.o CMakeFiles/VulkanTest.dir/lve_game_object.cpp.o CMakeFiles/VulkanTest.dir/lve_descriptors.cpp.o CMakeFiles/VulkanTest.dir/lve_buffer.cpp.o CMakeFiles/VulkanTest.dir/lve_image.cpp.o | /usr/lib/x86_64-linux-gnu/libvulkan.so
+build VulkanTest: CXX_EXECUTABLE_LINKER__VulkanTest_Debug CMakeFiles/VulkanTest.dir/main.cpp.o CMakeFiles/VulkanTest.dir/systems/point_light_system.cpp.o CMakeFiles/VulkanTest.dir/lve_camera.cpp.o CMakeFiles/VulkanTest.dir/keyboard_movement_controller.cpp.o CMakeFiles/VulkanTest.dir/systems/simple_render_system.cpp.o CMakeFiles/VulkanTest.dir/lve_renderer.cpp.o CMakeFiles/VulkanTest.dir/first_app.cpp.o CMakeFiles/VulkanTest.dir/lve_device.cpp.o CMakeFiles/VulkanTest.dir/lve_model.cpp.o CMakeFiles/VulkanTest.dir/lve_pipeline.cpp.o CMakeFiles/VulkanTest.dir/lve_swap_chain.cpp.o CMakeFiles/VulkanTest.dir/lve_window.cpp.o CMakeFiles/VulkanTest.dir/lve_game_object.cpp.o CMakeFiles/VulkanTest.dir/lve_descriptors.cpp.o CMakeFiles/VulkanTest.dir/lve_buffer.cpp.o CMakeFiles/VulkanTest.dir/lve_image.cpp.o CMakeFiles/VulkanTest.dir/gameObjects/MovingGameObject.cpp.o CMakeFiles/VulkanTest.dir/gameObjects/Actor.cpp.o CMakeFiles/VulkanTest.dir/Animations/Animation.cpp.o | /usr/lib/x86_64-linux-gnu/libvulkan.so
   FLAGS = -g
   LINK_LIBRARIES = /usr/lib/x86_64-linux-gnu/libvulkan.so  -lglfw
   OBJECT_DIR = CMakeFiles/VulkanTest.dir

@@ -8,6 +8,7 @@
 #include "systems/simple_render_system.hpp"
 #include "systems/point_light_system.hpp"
 #include "lve_buffer.hpp"
+#include "gameObjects/MovingGameObject.h"
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
@@ -35,7 +36,13 @@ namespace lve {
         // Texture Image loaded in first_app.hpp file.
     }
 
-    FirstApp::~FirstApp() { }
+    FirstApp::~FirstApp()
+    {
+        for(int i = 0; i < actors.size(); i++)
+        {
+            delete actors[i];
+        }
+    }
 
     void FirstApp::run() {
 
@@ -105,6 +112,12 @@ namespace lve {
 
             cameraController.moveInPlaneXZ(lveWindow.getGLFWwindow(), frameTime, viewerObject);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
+
+            for(int i = 0; i < actors.size(); i++)
+            {
+                actors[i]->update(frameTime);
+            }
+
 
             float aspect = lveRenderer.getAspectRatio();
             camera.setPerspectiveProjection(glm::radians(50.f), aspect, 0.1f, 100.f);
@@ -196,6 +209,13 @@ namespace lve {
 
         airoplane.textureBinding = 3;
         gameObjects.emplace(airoplane.getId(),std::move(airoplane));
+        Actor* aactor = new Actor(&gameObjects.find(airoplane.getId())->second);
+        Animation animation;
+        animation.AddNode(AnimationNode(glm::vec3(0, 0,10.0f), glm::vec3(.0f, .0f, .0f), glm::vec3(.0f, .0f, .0f), 5.0f));
+        animation.AddNode(AnimationNode(glm::vec3(0, 10.0f,0.0f), glm::vec3(.0f, .0f, .0f), glm::vec3(.0f, .0f, .0f), 5.0f));
+
+        aactor->addAnimation(animation);
+        actors.push_back(aactor);
 
         lveModel = LveModel::createModelFromFile(lveDevice, "../models/dergen.obj");
         auto dergen = LveGameObject::createGameObject();
@@ -227,10 +247,12 @@ namespace lve {
         for (int i=0;i<lightColors.size();i++) {
             auto pointLight = LveGameObject::makePointLight(0.2f);
             pointLight.color = lightColors[i];
-            auto rotateLight = glm::rotate(glm::mat4(1.f),  (i * glm::two_pi<float>()) / lightColors.size(), {0.f, -1.f, 0.f});
+            auto rotateLight = glm::rotate(glm::mat4(1.f), (i * glm::two_pi<float>()) / lightColors.size(),
+                                           {0.f, -1.f, 0.f});
             pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-1.f, -1.f, -1.f, 1.f));
             gameObjects.emplace(pointLight.getId(), std::move(pointLight));
         }
+
 
     }
 

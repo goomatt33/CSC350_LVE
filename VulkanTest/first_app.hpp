@@ -11,6 +11,7 @@
 #include "lve_renderer.hpp"
 #include "lve_descriptors.hpp"
 #include "lve_image.hpp"
+#include "gameObjects/Actor.h"
 
 
 #include <memory>
@@ -48,6 +49,8 @@ namespace lve {
         //note: Order of declaration is important.
         std::unique_ptr<LveDescriptorPool> globalPool{};
         LveGameObject::Map gameObjects;
+
+        std::vector<Actor*> actors;
     };
 }
 

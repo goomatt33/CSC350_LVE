@@ -29,6 +29,7 @@ namespace lve {
 
     class LveGameObject {
     public:
+        std::string objString = "test";
         using id_t = unsigned int;
         using Map = std::unordered_map<id_t, LveGameObject>;
 
@@ -36,6 +37,7 @@ namespace lve {
             static id_t currentId = 0;
             return LveGameObject{currentId++};
         }
+
 
         static LveGameObject makePointLight(float intensity = 10.0f, float radius = 0.1f, glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f));
 
@@ -55,9 +57,10 @@ namespace lve {
         std::shared_ptr<LveModel> model{};
         std::unique_ptr<PointLightComponent> pointLight = nullptr;
 
-    private:
-        LveGameObject(id_t id) : id(id) {}
+    protected:
         id_t id;
+
+        LveGameObject(id_t id) : id(id) {}
     };
 }
 
