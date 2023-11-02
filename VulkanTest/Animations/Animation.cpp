@@ -22,7 +22,7 @@ namespace lve {
         currentTime += deltaTime;
         if(currentTime >= animationDuration) {
             animationStarted = false;
-            throw EndOfAnimationException();
+            //throw EndOfAnimationException();
         }
         if(!animationStarted)
         {

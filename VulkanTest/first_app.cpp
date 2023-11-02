@@ -8,7 +8,6 @@
 #include "systems/simple_render_system.hpp"
 #include "systems/point_light_system.hpp"
 #include "lve_buffer.hpp"
-#include "gameObjects/MovingGameObject.h"
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
@@ -115,7 +114,7 @@ namespace lve {
 
             for(int i = 0; i < actors.size(); i++)
             {
-                actors[i]->update(frameTime);
+                actors[i]->update(frameTime, lveWindow.getGLFWwindow());
             }
 
 
@@ -207,14 +206,27 @@ namespace lve {
         airoplane.transform.scale = {1.f, 1.f, 1.0f};
         airoplane.transform.rotation = {0.0f, 0.0f, glm::radians(180.0f)};
 
+        airoplane.transform.animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.0f, 2.0f, 0.0f),
+                glm::vec3(0.0f, 0.0f, glm::radians(180.0f)),
+                glm::vec3(1.0f),
+                0.0f));
+        airoplane.transform.animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.0f, -5.0f, 10.0f),
+                glm::vec3(0.0f, glm::radians(90.0f), glm::radians(180.0f)),
+                glm::vec3(1.0f),
+                1.0f));
+        airoplane.transform.animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.0f, -100.0f, 10.0f),
+                glm::vec3(0.0f, glm::radians(90.0f), glm::radians(180.0f)),
+                glm::vec3(1.0f),
+                2.0f));
+        airoplane.transform.animationSequence.duration = 2.0f;
+
         airoplane.textureBinding = 3;
+
         gameObjects.emplace(airoplane.getId(),std::move(airoplane));
         Actor* aactor = new Actor(&gameObjects.find(airoplane.getId())->second);
-        Animation animation;
-        animation.AddNode(AnimationNode(glm::vec3(0, 0,10.0f), glm::vec3(.0f, .0f, .0f), glm::vec3(.0f, .0f, .0f), 5.0f));
-        animation.AddNode(AnimationNode(glm::vec3(0, 10.0f,0.0f), glm::vec3(.0f, .0f, .0f), glm::vec3(.0f, .0f, .0f), 5.0f));
-
-        aactor->addAnimation(animation);
         actors.push_back(aactor);
 
         lveModel = LveModel::createModelFromFile(lveDevice, "../models/dergen.obj");
@@ -223,8 +235,24 @@ namespace lve {
         dergen.transform.translation = {0.f, 50.0f, 50.f};
         dergen.transform.scale = {0.1f, 0.1f, 0.1f};
         dergen.transform.rotation = {0.0f, glm::radians(180.0f), 0.0f};
+
         dergen.textureBinding = 2;
+        dergen.transform.animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f, 50.0f, 50.f),
+                glm::vec3(0.0f, glm::radians(180.0f), 0.0f),
+                glm::vec3(0.1f),
+                1.0f
+                ));
+        dergen.transform.animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f, 50.0f, 50.f),
+                glm::vec3(0.0f, 0.0, 0.0f),
+                glm::vec3(0.01f),
+                2.0f
+        ));
+        dergen.transform.animationSequence.duration = 2.0f;
         gameObjects.emplace(dergen.getId(),std::move(dergen));
+        Actor* bactor = new Actor(&gameObjects.find(dergen.getId())->second);
+        actors.push_back(bactor);
 
         lveModel = LveModel::createModelFromFile(lveDevice, "../models/Mai.obj");
         auto mai = LveGameObject::createGameObject();
@@ -232,8 +260,39 @@ namespace lve {
         mai.transform.translation = {0.f, 1.35f, 0.f};
         mai.transform.scale = {1.f, 1.f, 1.f};
         mai.transform.rotation = { glm::radians(180.0f), glm::radians(180.0f), 0.0f};
+
+        mai.transform.animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f, 1.35f, 0.f),
+                glm::vec3(glm::radians(180.0f), glm::radians(180.0f), 0.0f),
+                glm::vec3(1.f, 1.f, 1.f),
+                0.5
+                ));
+        mai.transform.animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f, 1.35f, 0.f),
+                glm::vec3(glm::radians(180.0f), glm::radians(90.0f), 0.0f),
+                glm::vec3(1.1f, 1.1f, 1.f),
+                1.0
+        ));
+        mai.transform.animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f, 2.35f, 0.f),
+                glm::vec3(glm::radians(180.0f), glm::radians(0.0f), 0.0f),
+                glm::vec3(2.0f, 2.0f, 2.0f),
+                1.5
+        ));
+        mai.transform.animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f, 4.35f, 0.f),
+                glm::vec3(glm::radians(180.0f), glm::radians(-90.0f), 0.0f),
+                glm::vec3(1.1f, 1.1f, 1.f),
+                2.0f
+        ));
+
+        mai.transform.animationSequence.duration = 2.0f;
+
         mai.textureBinding = 1;
+
         gameObjects.emplace(mai.getId(),std::move(mai));
+        Actor* cactor = new Actor(&gameObjects.find(mai.getId())->second);
+        actors.push_back(cactor);
 
         std::vector<glm::vec3> lightColors{
             {1.f, .1f, .1f},

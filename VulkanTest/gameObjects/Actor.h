@@ -16,11 +16,14 @@ namespace lve {
         std::vector<Animation> animations;
         bool inAnimation = false;
         glm::vec3 animStep{0, 0, 0};
+        glm::vec3 originalTrans;
+        glm::vec3 originalRot;
+        glm::vec3 originalScale;
     public:
         Actor(LveGameObject* Object);
         ~Actor();
 
-        virtual void update(float deltaTime);
+        virtual void update(float deltaTime, GLFWwindow *window);
 
         void addAnimation(Animation animation)
         {

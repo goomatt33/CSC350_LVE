@@ -45,7 +45,7 @@ set(MY_SHADERS ${SPV_SHADERS})
 #Note we don’t need to bother with any of the .h or .hpp files.
 set(SYSTEM_INCLUDES  ${CMAKE_CURRENT_SOURCE_DIR}/systems/simple_render_system.cpp ${CMAKE_CURRENT_SOURCE_DIR}/systems/point_light_system.cpp)
 set(LVE_INCLUDES systems/point_light_system.cpp lve_camera.cpp keyboard_movement_controller.cpp systems/simple_render_system.cpp lve_renderer.cpp first_app.cpp lve_device.cpp lve_model.cpp lve_pipeline.cpp lve_swap_chain.cpp lve_window.cpp main.cpp lve_game_object.cpp lve_descriptors.cpp lve_buffer.cpp lve_frame_info.hpp lve_frame_info.hpp
-        lve_image.cpp gameObjects/MovingGameObject.cpp gameObjects/MovingGameObject.h gameObjects/Actor.cpp gameObjects/Actor.h Animations/Animation.cpp Animations/Animation.h)
+        lve_image.cpp gameObjects/Actor.cpp gameObjects/Actor.h Animations/Animation.cpp Animations/Animation.h)
 #At some point he will add a systems directory to break up
 #the organization of the files, that will add new complexity to this
 #file. Luckily not much complexity.

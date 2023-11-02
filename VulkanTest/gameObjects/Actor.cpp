@@ -8,14 +8,35 @@
 namespace lve {
 
 
-    void Actor::update(float deltaTime) {
+    void Actor::update(float deltaTime, GLFWwindow *window) {
 
-        gameObject->transform.translation = animations[0].getAnimationStep(gameObject->transform.translation, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+            inAnimation =true;
+        }
+
+        if(inAnimation)
+        {
+            try
+            {
+                gameObject->transform.update(deltaTime);
+            }
+            catch (EndOfAnimationException)
+            {
+                inAnimation = false;
+                gameObject->transform.translation = originalTrans;
+                gameObject->transform.rotation = originalRot;
+                gameObject->transform.scale = originalScale;
+            }
+
+        }
 
     }
 
     Actor::Actor(LveGameObject *Object) {
         gameObject = Object;
+        originalRot = gameObject->transform.rotation;
+        originalTrans = gameObject->transform.translation;
+        originalScale = gameObject->transform.scale;
     }
 
 

@@ -65,7 +65,6 @@ namespace lve {
 
     };
 
-    class EndOfAnimationException : public std::exception {};
 
 } // lve
 
