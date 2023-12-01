@@ -26,6 +26,7 @@ namespace lve {
         glm::vec3 translation;
         glm::vec3 rotation;
         glm::vec3 scale;
+
         float timeStamp;
     };
 
@@ -41,14 +42,15 @@ namespace lve {
         glm::vec3 scale{1.0f, 1.0f, 1.0f};
         glm::vec3 rotation{0.0f};
 
-        AnimationSequence animationSequence; // sequence of the animation;
+        glm::mat4 globalMat4;
+
         //AnimationSequence could be changed to a vector to support multiple animations.
-        float currentTime = 0.0f;  // Current time since the animation started
         // Need to go over base form of each in class.
         // Need to show standard rotation matrix found in most books.
         glm::mat4 mat4();
         glm::mat4 normalMatrix();
-        void update(float deltaTime);  // New method to update based on animations
+        glm::mat4 renderMatrix;
+
     };
 
 
@@ -80,11 +82,14 @@ namespace lve {
 
         id_t getId() const { return id; }
 
+        void setRenderMatrix(TransformComponent* parent = nullptr);
+
 
 
 
         glm::vec3 color{};
         TransformComponent transform{};
+        TransformComponent localTransform{};
         int32_t textureBinding = -1;
 
 
@@ -92,12 +97,19 @@ namespace lve {
         std::shared_ptr<LveModel> model{};
         std::unique_ptr<PointLightComponent> pointLight = nullptr;
 
+        AnimationSequence animationSequence; // sequence of the animation;
+        void update(float deltaTime, TransformComponent* parent = nullptr);  // New method to update based on animations
+
 
     private:
         LveGameObject(id_t id) : id(id) {}
         id_t id;
+
+        float currentTime = 0.0f;  // Current time since the animation started
+
     };
 
+    // Exception signalling the end of the animation
     class EndOfAnimationException : public std::exception {};
 
 }

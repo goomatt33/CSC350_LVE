@@ -50,6 +50,7 @@ namespace lve {
         std::unique_ptr<LveDescriptorPool> globalPool{};
         LveGameObject::Map gameObjects;
 
+        // Vector of game actors for updating
         std::vector<Actor*> actors;
     };
 }
