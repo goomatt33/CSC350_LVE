@@ -35,6 +35,8 @@ namespace lve {
         Actor* parent;
         bool updatedThisFrame;
 
+        LveGameObject* getGameObject() { return gameObject; }
+
         /**
          * Constructor.
          * @param Object Reference to the game object in memory that is contained.
@@ -51,6 +53,8 @@ namespace lve {
          * @param window Reference to the current window context for handling inputs.
          */
         virtual void update(float deltaTime, GLFWwindow *window, Actor* p = nullptr);
+
+        glm::mat4 getRenderMatrix();
 
         void prepare();
 

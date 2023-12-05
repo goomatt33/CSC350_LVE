@@ -61,7 +61,7 @@ namespace lve {
         //Add the three images to an vector
         texVec.push_back(LveImage::createImageFromFile(lveDevice, "../textures/Ch_Mai_95_D.png"));
         texVec.push_back(LveImage::createImageFromFile(lveDevice, "../textures/material_0.png"));
-        texVec.push_back(LveImage::createImageFromFile(lveDevice, "../textures/material_1.png"));
+        texVec.push_back(LveImage::createImageFromFile(lveDevice, "../textures/LittleDudesLittleFace.png"));
 
 
         // Added two additional bindings from the original code
@@ -108,6 +108,9 @@ namespace lve {
             auto newTime = std::chrono::high_resolution_clock::now();
             float frameTime = std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
             currentTime = newTime;
+
+            if (frameTime > 1.6f)
+                frameTime = 1.6f;
 
             cameraController.moveInPlaneXZ(lveWindow.getGLFWwindow(), frameTime, viewerObject);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
@@ -200,108 +203,313 @@ namespace lve {
         return std::make_unique<LveModel>(device, modelBuilder);
     }
 
+    Actor* FirstApp::createActor(std::string file, std::string name, int textureBinding,
+                       glm::vec3 translation, glm::vec3 rotation, glm::vec3 scale)
+    {
+        std::shared_ptr<LveModel> lveModel = LveModel::createModelFromFile(lveDevice, file);
+        auto gameObj = LveGameObject::createGameObject();
+        gameObj.model = lveModel;
+        gameObj.localTransform.translation = translation;
+        gameObj.localTransform.rotation = rotation;
+        gameObj.transform.scale = scale;
+        gameObj.textureBinding = textureBinding;
+        gameObjects.emplace(gameObj.getId(), std::move(gameObj));
+        Actor* actor = new Actor(&gameObjects.find(gameObj.getId())->second, name);
+        return actor;
+    }
+
     void FirstApp::loadGameObjects() {
 
         // Load all three models into game objects, apply their transforms
         // and emplace them into the scene
-        std::shared_ptr<LveModel> lveModel = LveModel::createModelFromFile(lveDevice, "../models/SU-27CGLOWPOLY.obj");
-        auto airoplane = LveGameObject::createGameObject();
-        airoplane.model = lveModel;
-        airoplane.localTransform.translation = {0.f, 2.f, 0.f};
-        airoplane.transform.scale = {1.f, 1.f, 1.0f};
-        airoplane.localTransform.rotation = {0.0f, 0.0f, glm::radians(180.0f)};
 
-        // Add keyframes to the animation
-        airoplane.animationSequence.keyFrames.push_back(AnimationKeyFrame(
-                glm::vec3(0.0f, 2.0f, 0.0f),
-                glm::vec3(0.0f, 0.0f, glm::radians(180.0f)),
+        Actor* Torso = createActor("../models/LittleDudeTorso.obj", "Torso", 3,
+                                   glm::vec3(-5.0f,0.0f,10.0f),
+                                   glm::vec3(glm::radians(225.0f), 0.0f, glm::radians(180.f)));
+        actors.push_back(Torso);
+
+
+        Torso->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(-5.0f,0.0f,10.0f),
+                glm::vec3(glm::radians(225.0f), 0.0f, glm::radians(180.0f)),
                 glm::vec3(1.0f),
                 0.0f));
-        airoplane.animationSequence.keyFrames.push_back(AnimationKeyFrame(
-                glm::vec3(0.0f, -5.0f, 10.0f),
-                glm::vec3(0.0f, glm::radians(90.0f), glm::radians(180.0f)),
-                glm::vec3(1.0f),
-                1.0f));
-        airoplane.animationSequence.keyFrames.push_back(AnimationKeyFrame(
-                glm::vec3(0.0f, -100.0f, 10.0f),
-                glm::vec3(0.0f, glm::radians(90.0f), glm::radians(180.0f)),
+
+        Torso->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(5.0f, 0.f, 0.0f),
+                glm::vec3(glm::radians(225.0f), 0.0f, glm::radians(180.0f)),
                 glm::vec3(1.0f),
                 2.0f));
-        airoplane.animationSequence.duration = 2.0f;
+        Torso->getGameObject()->animationSequence.duration = 2.0f;
 
-        airoplane.textureBinding = 3;
-        // Add the game object to vulkans memory.
-        // Create a reference to the object, add the reference to an actor, and add the actor to
-        // the actor vector.
-        gameObjects.emplace(airoplane.getId(),std::move(airoplane));
-        Actor* aactor = new Actor(&gameObjects.find(airoplane.getId())->second, "airplane");
-        actors.push_back(aactor);
+        Actor* head = createActor("../models/LittleDudeHead.obj", "Head", 3);
+        actors.push_back(head);
+        head->parent = Torso;
 
-        lveModel = LveModel::createModelFromFile(lveDevice, "../models/dergen.obj");
-        auto dergen = LveGameObject::createGameObject();
-        dergen.model = lveModel;
-        dergen.localTransform.translation = {0.f, 50.0f, 50.f};
-        dergen.transform.scale = {0.1f, 0.1f, 0.1f};
-        dergen.localTransform.rotation = {0.0f, glm::radians(180.0f), 0.0f};
+        Actor* leftThigh = createActor("../models/LittleDudeLeftThigh.obj", "leftThigh", 3);
+        actors.push_back(leftThigh);
+        leftThigh->parent = Torso;
 
-        dergen.textureBinding = 2;
-        dergen.animationSequence.keyFrames.push_back(AnimationKeyFrame(
-                glm::vec3(0.f, 50.0f, 50.f),
-                glm::vec3(0.0f, glm::radians(180.0f), 0.0f),
-                glm::vec3(0.1f),
-                1.0f
-                ));
-        dergen.animationSequence.keyFrames.push_back(AnimationKeyFrame(
-                glm::vec3(0.f, 50.0f, 50.f),
-                glm::vec3(0.0f, 0.0, 0.0f),
-                glm::vec3(0.01f),
-                2.0f
-        ));
-        dergen.animationSequence.duration = 2.0f;
-        gameObjects.emplace(dergen.getId(),std::move(dergen));
-        Actor* bactor = new Actor(&gameObjects.find(dergen.getId())->second, "dergen");
-        actors.push_back(bactor);
+        leftThigh->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                0.0f));
+        leftThigh->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f, 0.f, glm::radians(45.f)),
+                glm::vec3(0.0f),
+                0.5f));
+        leftThigh->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f, 0.f, glm::radians(-45.f)),
+                glm::vec3(0.0f),
+                1.f));
+        leftThigh->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f, 0.f, glm::radians(45.f)),
+                glm::vec3(0.0f),
+                1.5f));
+        leftThigh->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f, 0.f, glm::radians(-45.f)),
+                glm::vec3(0.0f),
+                2.f));
 
-        lveModel = LveModel::createModelFromFile(lveDevice, "../models/Mai.obj");
-        auto mai = LveGameObject::createGameObject();
-        mai.model = lveModel;
-        mai.localTransform.translation = {0.f, 1.f, 0.f};
-        mai.transform.scale = {1.f, 1.f, 1.f};
-        mai.localTransform.rotation = { 0.f, 0.f, 0.0f};
+        leftThigh->getGameObject()->animationSequence.duration = 2.0f;
 
-        mai.animationSequence.keyFrames.push_back(AnimationKeyFrame(
-                glm::vec3(0.f, 1.f, 0.f),
-                glm::vec3(glm::radians(90.0f), 0.f, 0.0f),
-                glm::vec3(1.f, 1.f, 1.f),
-                0.5
-                ));
-        mai.animationSequence.keyFrames.push_back(AnimationKeyFrame(
-                glm::vec3(0.f, 1.f, 0.f),
-                glm::vec3(glm::radians(180.0f), 0.f, 0.0f),
-                glm::vec3(1.1f, 1.1f, 1.f),
-                1.0
-        ));
-        mai.animationSequence.keyFrames.push_back(AnimationKeyFrame(
-                glm::vec3(0.f, 1.f, 0.f),
-                glm::vec3(glm::radians(720.0f), glm::radians(0.0f), 0.0f),
-                glm::vec3(2.0f, 2.0f, 2.0f),
-                1.5
-        ));
-        mai.animationSequence.keyFrames.push_back(AnimationKeyFrame(
-                glm::vec3(0.f, 1.f, 0.f),
-                glm::vec3(glm::radians(0.0f), glm::radians(-90.0f), 0.0f),
-                glm::vec3(1.1f, 1.1f, 1.f),
-                2.0f
-        ));
+        Actor* rightThigh = createActor("../models/LittleDudeRightThigh.obj", "RightThigh", 3);
+        actors.push_back(rightThigh);
+        rightThigh->parent = Torso;
 
-        mai.animationSequence.duration = 2.0f;
+        rightThigh->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                0.0f));
+        rightThigh->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f, 0.f, glm::radians(-45.f)),
+                glm::vec3(0.0f),
+                0.5f));
+        rightThigh->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f, 0.f, glm::radians(45.f)),
+                glm::vec3(0.0f),
+                1.f));
+        rightThigh->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f, 0.f, glm::radians(-45.f)),
+                glm::vec3(0.0f),
+                1.5f));
+        rightThigh->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f, 0.f, glm::radians(45.f)),
+                glm::vec3(0.0f),
+                2.f));
 
-        mai.textureBinding = 1;
 
-        gameObjects.emplace(mai.getId(),std::move(mai));
-        Actor* cactor = new Actor(&gameObjects.find(mai.getId())->second, "mai", aactor);
-        cactor->parent = aactor;
-        actors.push_back(cactor);
+        rightThigh->getGameObject()->animationSequence.duration = 2.0f;
+
+        Actor* leftCalf = createActor("../models/LittleDudeLeftCalf.obj", "leftLeg", 3);
+        actors.push_back(leftCalf);
+        leftCalf->parent = leftThigh;
+
+        leftCalf->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                0.0f));
+
+        leftCalf->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(1.5f, 0.0f, 0.0f),
+                glm::vec3(0.f, 0.f, glm::radians(-45.f)),
+                glm::vec3(0.0f),
+                0.25f));
+
+        leftCalf->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                0.5f));
+        leftCalf->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                1.f));
+        leftCalf->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(2.0f, 0.0f, 0.0f),
+                glm::vec3(0.f, 0.f, glm::radians(-45.f)),
+                glm::vec3(0.0f),
+                1.25f));
+        leftCalf->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                1.5f));
+        leftCalf->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                2.f));
+
+        leftCalf->getGameObject()->animationSequence.duration = 2.0f;
+
+        Actor* rightCalf = createActor("../models/LittleDudeRightCalf.obj", "rightCalf", 3);
+        actors.push_back(rightCalf);
+        rightCalf->parent = rightThigh;
+
+        rightCalf->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                0.0f));
+        rightCalf->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                0.5f));
+        rightCalf->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(2.0f, 0.0f, 0.0f),
+                glm::vec3(0.f, 0.f, glm::radians(-45.f)),
+                glm::vec3(0.0f),
+                0.75f));
+        rightCalf->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                1.0f));
+        rightCalf->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                1.5f));
+        rightCalf->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(2.0f, 0.0f, 0.0f),
+                glm::vec3(0.f, 0.f, glm::radians(-45.f)),
+                glm::vec3(0.0f),
+                1.75f));
+        rightCalf->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                2.f));
+
+        rightCalf->getGameObject()->animationSequence.duration = 2.0f;
+
+        Actor* leftShoulder = createActor("../models/LittleDudeLeftShoulder.obj", "leftShoulder", 3);
+        actors.push_back(leftShoulder);
+        leftShoulder->parent = Torso;
+
+        leftShoulder->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                0.0f));
+
+        leftShoulder->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(-2.f,1.f,0.f),
+                glm::vec3(0.f, 0.f, glm::radians(-45.f)),
+                glm::vec3(0.0f),
+                0.5f));
+        leftShoulder->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(2.f,1.f,0.f),
+                glm::vec3(0.f, 0.f, glm::radians(45.f)),
+                glm::vec3(0.0f),
+                1.f));
+        leftShoulder->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(-2.f,1.f,0.f),
+                glm::vec3(0.f, 0.f, glm::radians(-45.f)),
+                glm::vec3(0.0f),
+                1.5f));
+        leftShoulder->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(2.f,1.f,0.f),
+                glm::vec3(0.f, 0.f, glm::radians(45.f)),
+                glm::vec3(0.0f),
+                2.f));
+
+        leftShoulder->getGameObject()->animationSequence.duration = 2.0f;
+
+        Actor* rightShoulder = createActor("../models/LittleDudeRightShoulder.obj", "rightShoulder", 3);
+        actors.push_back(rightShoulder);
+        rightShoulder->parent = Torso;
+
+        rightShoulder->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                0.0f));
+
+        rightShoulder->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(2.f,1.f,0.f),
+                glm::vec3(0.f, 0.f, glm::radians(45.f)),
+                glm::vec3(0.0f),
+                0.5f));
+        rightShoulder->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(-2.f,1.f,0.f),
+                glm::vec3(0.f, 0.f, glm::radians(-45.f)),
+                glm::vec3(0.0f),
+                1.f));
+        rightShoulder->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(2.f,1.f,0.f),
+                glm::vec3(0.f, 0.f, glm::radians(45.f)),
+                glm::vec3(0.0f),
+                1.5f));
+        rightShoulder->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(-2.f,1.f,0.f),
+                glm::vec3(0.f, 0.f, glm::radians(-45.f)),
+                glm::vec3(0.0f),
+                2.f));
+
+        rightShoulder->getGameObject()->animationSequence.duration = 2.0f;
+
+
+        Actor* leftArm = createActor("../models/LittleDudeLeftArm.obj", "leftArm", 3);
+        actors.push_back(leftArm);
+        leftArm->parent = leftShoulder;
+
+
+        leftArm->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                0.0f));
+
+        leftArm->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(1.f, 0.5f, 0.f),
+                glm::vec3(0.f, 0.f, glm::radians(45.f)),
+                glm::vec3(0.0f),
+                0.5f));
+        leftArm->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(1.f, 0.5f, 0.f),
+                glm::vec3(0.f, 0.f, glm::radians(45.f)),
+                glm::vec3(0.0f),
+                2.f));
+
+        leftArm->getGameObject()->animationSequence.duration = 2.0f;
+
+        Actor* rightArm = createActor("../models/LittleDudeRightArm.obj", "rightArm", 3);
+        actors.push_back(rightArm);
+        rightArm->parent = rightShoulder;
+
+        rightArm->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f),
+                glm::vec3(0.f),
+                glm::vec3(0.0f),
+                0.0f));
+
+        rightArm->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(1.f, 0.5f, 0.f),
+                glm::vec3(0.f, 0.f, glm::radians(45.f)),
+                glm::vec3(0.0f),
+                0.5f));
+        rightArm->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(1.f, 0.5f, 0.f),
+                glm::vec3(0.f, 0.f, glm::radians(45.f)),
+                glm::vec3(0.0f),
+                2.f));
+
+        rightArm->getGameObject()->animationSequence.duration = 2.0f;
 
 
     }

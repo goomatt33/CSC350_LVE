@@ -35,6 +35,10 @@ namespace lve {
     private:
         void loadGameObjects();
 
+        Actor* createActor(std::string file, std::string name, int textureBinding,
+                           glm::vec3 translation = glm::vec3(0.0f), glm::vec3 rotation = glm::vec3 (0.f),
+                           glm::vec3 scale = glm::vec3(1.0f));
+
         LveWindow lveWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
         LveDevice lveDevice{lveWindow};
         std::shared_ptr<LveImage> textureImage = LveImage::createImageFromFile(lveDevice, "../textures/Ch_Mai_95_D.png");

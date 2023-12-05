@@ -30,7 +30,7 @@ namespace lve {
             try
             {
                 if(parent != nullptr)
-                    gameObject->update(deltaTime, &parent->gameObject->transform);
+                    gameObject->update(deltaTime, parent->gameObject);
                 else
                     gameObject->update(deltaTime);
             }
@@ -47,7 +47,7 @@ namespace lve {
                 {
                     //gameObject->transform.translation = originalTrans + parent->gameObject->transform.translation;
                     //gameObject->transform.rotation = originalRot + parent->gameObject->transform.translation;
-                    gameObject->setRenderMatrix(&parent->gameObject->transform);
+                    gameObject->setRenderMatrix(parent->gameObject);
                 }
                 else
                 {
@@ -66,7 +66,11 @@ namespace lve {
             {
                 //gameObject->transform.translation = originalTrans + parent->gameObject->transform.translation;
                 //gameObject->transform.rotation = originalRot + parent->gameObject->transform.rotation;
-                gameObject->setRenderMatrix(&parent->gameObject->transform);
+                gameObject->setRenderMatrix(parent->gameObject);
+            }
+            else
+            {
+                gameObject->setRenderMatrix();
             }
         }
 
@@ -90,7 +94,7 @@ namespace lve {
         parent = Parent;
         if(parent != nullptr)
         {
-            gameObject->setRenderMatrix(&parent->gameObject->transform);
+            gameObject->setRenderMatrix(parent->gameObject);
 
         }
         else
@@ -102,6 +106,19 @@ namespace lve {
     void Actor::prepare()
     {
         updatedThisFrame = false;
+    }
+
+    glm::mat4 Actor::getRenderMatrix() {
+        if(parent != nullptr)
+        {
+            gameObject->transform.renderMatrix = gameObject->transform.mat4() * parent->getRenderMatrix();
+            return gameObject->transform.renderMatrix;
+        }
+        else
+        {
+            gameObject->transform.renderMatrix = gameObject->transform.mat4();
+            return gameObject->transform.renderMatrix;
+        }
     }
 
 

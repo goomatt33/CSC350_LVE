@@ -82,7 +82,7 @@ namespace lve {
 
         id_t getId() const { return id; }
 
-        void setRenderMatrix(TransformComponent* parent = nullptr);
+        void setRenderMatrix(LveGameObject* parent = nullptr);
 
 
 
@@ -97,8 +97,11 @@ namespace lve {
         std::shared_ptr<LveModel> model{};
         std::unique_ptr<PointLightComponent> pointLight = nullptr;
 
+
         AnimationSequence animationSequence; // sequence of the animation;
-        void update(float deltaTime, TransformComponent* parent = nullptr);  // New method to update based on animations
+        void update(float deltaTime, LveGameObject* parent = nullptr);  // New method to update based on animations
+
+        glm::mat4 getRenderMatrix();
 
 
     private:
