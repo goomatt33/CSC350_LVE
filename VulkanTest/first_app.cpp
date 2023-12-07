@@ -115,11 +115,12 @@ namespace lve {
             cameraController.moveInPlaneXZ(lveWindow.getGLFWwindow(), frameTime, viewerObject);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
+            // Prepare the actors to render the next frame.
             for(int i = 0; i < actors.size(); i++)
             {
                 actors[i]->prepare();
             }
-
+            // Update the actors.
             for(int i = 0; i < actors.size(); i++)
             {
                 actors[i]->update(frameTime, lveWindow.getGLFWwindow());
@@ -220,9 +221,7 @@ namespace lve {
 
     void FirstApp::loadGameObjects() {
 
-        // Load all three models into game objects, apply their transforms
-        // and emplace them into the scene
-
+        // Load the little dude and his parts with animation.
         Actor* Torso = createActor("../models/LittleDudeTorso.obj", "Torso", 3, Actor::TRIGGERED,
                                    glm::vec3(-5.0f,0.0f,10.0f),
                                    glm::vec3(glm::radians(225.0f), 0.0f, glm::radians(180.f)));
@@ -511,16 +510,17 @@ namespace lve {
 
         rightArm->getGameObject()->animationSequence.duration = 2.0f;
 
+        // Load the ground.
         Actor* ground = createActor("../models/Ground.obj", "ground", 1, Actor::TRIGGERED,
                                     glm::vec3(0.0f, 8, 10.f),
                                     glm::vec3(glm::radians(45.0f), 0.0f, 0.0f));
         actors.push_back(ground);
 
+        // Load and animate the grass.
         Actor* grassBase = createActor("../models/GrassBlade.obj", "grassBase", 2, Actor::CONTINUOUS,
                                        glm::vec3(5.f, 4.f, 15.f),
                                        glm::vec3(glm::radians(-85.f), glm::radians(180.f), 0.f));
         actors.push_back(grassBase);
-
         Actor* grassTop = createActor("../models/GrassBlade.obj", "grassBase", 2, Actor::CONTINUOUS,
                                       glm::vec3(0.f, 2.f, 0.f));
         actors.push_back(grassTop);

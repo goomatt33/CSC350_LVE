@@ -35,6 +35,17 @@ namespace lve {
     private:
         void loadGameObjects();
 
+        /**
+         * Creates an actor that contains a game object.
+         * @param file Obj to load into the object
+         * @param name Friendly name for the actor
+         * @param textureBinding Texture for the actor
+         * @param animationMode
+         * @param translation
+         * @param rotation
+         * @param scale
+         * @return
+         */
         Actor* createActor(std::string file, std::string name, int textureBinding, Actor::ANIMATION_MODE animationMode = Actor::ANIMATION_MODE::TRIGGERED,
                            glm::vec3 translation = glm::vec3(0.0f), glm::vec3 rotation = glm::vec3 (0.f),
                            glm::vec3 scale = glm::vec3(1.0f));

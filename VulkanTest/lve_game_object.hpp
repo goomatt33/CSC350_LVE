@@ -82,6 +82,12 @@ namespace lve {
 
         id_t getId() const { return id; }
 
+        /**
+         * Sets the render matrix that the render system sees. If the object has a parent,
+         * the render matrix is calculated with the parent's transform.
+         * NOTE: SCALE CURRENTLY NOT SUPPORTED! MAKE SURE ALL OBJECTS HAVE A SCALE OF 1!
+         * @param parent Game object this one is child to.
+         */
         void setRenderMatrix(LveGameObject* parent = nullptr);
 
 

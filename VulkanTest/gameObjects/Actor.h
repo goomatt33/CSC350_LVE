@@ -29,27 +29,40 @@ namespace lve {
         glm::vec3 originalRot;                  // Original rotation of the game object
         glm::vec3 originalScale;                // Original scale of the game object
 
-        glm::vec3 translationLocal;
-        glm::vec3 rotationGlobal;
     public:
 
+        /**
+         * Enum for the animation modes available to use
+         */
         enum ANIMATION_MODE
         {
             TRIGGERED,
             CONTINUOUS
         };
 
+        /**
+         * Stores the actors animation mode.
+         * If the mode is TRIGGERED, the object will animate when triggered.
+         * If the mode is CONTINUOUS, the object will animate at start
+         * and continue looping until program end.
+         */
         ANIMATION_MODE animMode;
 
         std::string name;
-        Actor* parent;
-        bool updatedThisFrame;
+        Actor* parent;          // Stores a reference to the parent actor.
+        bool updatedThisFrame;  // Stores if the actor has been updated this frame
 
+        /**
+         * Returns the game object contained by the actor
+         */
         LveGameObject* getGameObject() { return gameObject; }
 
         /**
          * Constructor.
          * @param Object Reference to the game object in memory that is contained.
+         * @param Name The friendly name of the object. Used for debugging.
+         * @param Parent A reference to the parent actor.
+         * @param animationMode the mode for animating.
          */
         Actor(LveGameObject* Object, std::string Name, Actor* Parent = nullptr, ANIMATION_MODE animationMode = TRIGGERED);
         ~Actor();
@@ -64,8 +77,17 @@ namespace lve {
          */
         virtual void update(float deltaTime, GLFWwindow *window, Actor* p = nullptr);
 
+        /**
+         * Gets the render matrix for the actor
+         * @return mat4 render matrix
+         */
         glm::mat4 getRenderMatrix();
 
+        /**
+         * Prepares the actor for the next frame.
+         * Essentially just sets 'updatedThisFrame' to
+         * false.
+         */
         void prepare();
 
     private:
