@@ -59,8 +59,8 @@ namespace lve {
         }
 
         //Add the three images to an vector
-        texVec.push_back(LveImage::createImageFromFile(lveDevice, "../textures/Ch_Mai_95_D.png"));
-        texVec.push_back(LveImage::createImageFromFile(lveDevice, "../textures/material_0.png"));
+        texVec.push_back(LveImage::createImageFromFile(lveDevice, "../textures/ground.png"));
+        texVec.push_back(LveImage::createImageFromFile(lveDevice, "../textures/grass.png"));
         texVec.push_back(LveImage::createImageFromFile(lveDevice, "../textures/LittleDudesLittleFace.png"));
 
 
@@ -203,7 +203,7 @@ namespace lve {
         return std::make_unique<LveModel>(device, modelBuilder);
     }
 
-    Actor* FirstApp::createActor(std::string file, std::string name, int textureBinding,
+    Actor* FirstApp::createActor(std::string file, std::string name, int textureBinding, Actor::ANIMATION_MODE animationMode,
                        glm::vec3 translation, glm::vec3 rotation, glm::vec3 scale)
     {
         std::shared_ptr<LveModel> lveModel = LveModel::createModelFromFile(lveDevice, file);
@@ -214,7 +214,7 @@ namespace lve {
         gameObj.transform.scale = scale;
         gameObj.textureBinding = textureBinding;
         gameObjects.emplace(gameObj.getId(), std::move(gameObj));
-        Actor* actor = new Actor(&gameObjects.find(gameObj.getId())->second, name);
+        Actor* actor = new Actor(&gameObjects.find(gameObj.getId())->second, name, nullptr, animationMode);
         return actor;
     }
 
@@ -223,7 +223,7 @@ namespace lve {
         // Load all three models into game objects, apply their transforms
         // and emplace them into the scene
 
-        Actor* Torso = createActor("../models/LittleDudeTorso.obj", "Torso", 3,
+        Actor* Torso = createActor("../models/LittleDudeTorso.obj", "Torso", 3, Actor::TRIGGERED,
                                    glm::vec3(-5.0f,0.0f,10.0f),
                                    glm::vec3(glm::radians(225.0f), 0.0f, glm::radians(180.f)));
         actors.push_back(Torso);
@@ -511,10 +511,98 @@ namespace lve {
 
         rightArm->getGameObject()->animationSequence.duration = 2.0f;
 
+        Actor* ground = createActor("../models/Ground.obj", "ground", 1, Actor::TRIGGERED,
+                                    glm::vec3(0.0f, 8, 10.f),
+                                    glm::vec3(glm::radians(45.0f), 0.0f, 0.0f));
+        actors.push_back(ground);
+
+        Actor* grassBase = createActor("../models/GrassBlade.obj", "grassBase", 2, Actor::CONTINUOUS,
+                                       glm::vec3(5.f, 4.f, 15.f),
+                                       glm::vec3(glm::radians(-85.f), glm::radians(180.f), 0.f));
+        actors.push_back(grassBase);
+
+        Actor* grassTop = createActor("../models/GrassBlade.obj", "grassBase", 2, Actor::CONTINUOUS,
+                                      glm::vec3(0.f, 2.f, 0.f));
+        actors.push_back(grassTop);
+        grassTop->parent = grassBase;
+
+        grassBase->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(5.f, 4.f, 15.f),
+                glm::vec3(glm::radians(-85.f),glm::radians(225.f),0.f),
+                glm::vec3(1.0f),
+                0.0f));
+
+        grassBase->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(5.f, 4.f, 15.f),
+                glm::vec3(glm::radians(-85.f), glm::radians(135.f), 0.f),
+                glm::vec3(1.0f),
+                0.5f));
+
+        grassBase->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(5.f, 4.f, 15.f),
+                glm::vec3(glm::radians(-85.f),glm::radians(225.f),0.f),
+                glm::vec3(1.0f),
+                1.0f));
+
+        grassBase->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(5.f, 4.f, 15.f),
+                glm::vec3(glm::radians(-85.f), glm::radians(135.f), 0.f),
+                glm::vec3(1.0f),
+                1.5f));
+
+        grassBase->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(5.f, 4.f, 15.f),
+                glm::vec3(glm::radians(-85.f),glm::radians(225.f),0.f),
+                glm::vec3(1.0f),
+                2.0f));
+
+        grassBase->getGameObject()->animationSequence.duration = 2.f;
+
+
+        grassTop->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f, 2.f, 0.f),
+                glm::vec3(0.f,glm::radians(45.f),0.f),
+                glm::vec3(1.0f),
+                0.0f));
+
+        grassTop->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f, 2.f, 0.f),
+                glm::vec3(0.f, glm::radians(-45.f), 0.f),
+                glm::vec3(1.0f),
+                0.5f));
+
+        grassTop->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f, 2.f, 0.f),
+                glm::vec3(0.f,glm::radians(45.f),0.f),
+                glm::vec3(1.0f),
+                1.0f));
+
+        grassTop->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f, 2.f, 0.f),
+                glm::vec3(0.f, glm::radians(-45.f), 0.f),
+                glm::vec3(1.0f),
+                1.5f));
+
+        grassTop->getGameObject()->animationSequence.keyFrames.push_back(AnimationKeyFrame(
+                glm::vec3(0.f, 2.f, 0.f),
+                glm::vec3(0.f,glm::radians(45.f),0.f),
+                glm::vec3(1.0f),
+                2.0f));
+
+        grassTop->getGameObject()->animationSequence.duration = 2.f;
+
+        auto star1 = LveGameObject::makePointLight();
+        star1.transform.translation = glm::vec3(0.f, -5.f, 10.f);
+        gameObjects.emplace(star1.getId(), std::move(star1));
+
+        auto star2 = LveGameObject::makePointLight();
+        star2.transform.translation = glm::vec3(3.f, -4.f, 10.f);
+        gameObjects.emplace(star2.getId(), std::move(star2));
+
+        auto star3 = LveGameObject::makePointLight();
+        star3.transform.translation = glm::vec3(1.5f, -3.f, 10.f);
+        gameObjects.emplace(star3.getId(), std::move(star3));
 
     }
-
-
-
 }
 

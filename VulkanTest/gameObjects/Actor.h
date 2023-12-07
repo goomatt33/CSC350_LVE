@@ -20,6 +20,7 @@
 namespace lve {
     class Actor
     {
+
     private:
         LveGameObject* gameObject;              // The contained game object
         std::vector<Animation> animations;      // Vector of animations available to the actor <NOT IMPLEMENTED>
@@ -31,6 +32,15 @@ namespace lve {
         glm::vec3 translationLocal;
         glm::vec3 rotationGlobal;
     public:
+
+        enum ANIMATION_MODE
+        {
+            TRIGGERED,
+            CONTINUOUS
+        };
+
+        ANIMATION_MODE animMode;
+
         std::string name;
         Actor* parent;
         bool updatedThisFrame;
@@ -41,7 +51,7 @@ namespace lve {
          * Constructor.
          * @param Object Reference to the game object in memory that is contained.
          */
-        Actor(LveGameObject* Object, std::string Name, Actor* Parent = nullptr);
+        Actor(LveGameObject* Object, std::string Name, Actor* Parent = nullptr, ANIMATION_MODE animationMode = TRIGGERED);
         ~Actor();
 
 

@@ -19,10 +19,20 @@ namespace lve {
         {
             return;
         }
+        if(animMode == TRIGGERED)
+        {
+            if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+                if (gameObject->animationSequence.keyFrames.size() > 1)
+                    inAnimation = true;
+            }
+        }
 
-        if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
-            if(gameObject->animationSequence.keyFrames.size() > 1)
-                inAnimation =true;
+        if(animMode == CONTINUOUS)
+        {
+            if(!inAnimation)
+            {
+                inAnimation = true;
+            }
         }
 
         if(inAnimation)
@@ -78,8 +88,9 @@ namespace lve {
 
     }
 
-    Actor::Actor(LveGameObject *Object, std::string Name, Actor* Parent) {
+    Actor::Actor(LveGameObject *Object, std::string Name, Actor* Parent, ANIMATION_MODE animationMode) {
         parent = Parent;
+        animMode = animationMode;
         gameObject = Object; // Set the game object to the game object
         name = Name;
         // Record the original rotation, translation, and scale of the game object.

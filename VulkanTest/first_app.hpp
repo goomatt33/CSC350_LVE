@@ -35,7 +35,7 @@ namespace lve {
     private:
         void loadGameObjects();
 
-        Actor* createActor(std::string file, std::string name, int textureBinding,
+        Actor* createActor(std::string file, std::string name, int textureBinding, Actor::ANIMATION_MODE animationMode = Actor::ANIMATION_MODE::TRIGGERED,
                            glm::vec3 translation = glm::vec3(0.0f), glm::vec3 rotation = glm::vec3 (0.f),
                            glm::vec3 scale = glm::vec3(1.0f));
 
@@ -56,6 +56,7 @@ namespace lve {
 
         // Vector of game actors for updating
         std::vector<Actor*> actors;
+
     };
 }
 
